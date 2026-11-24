@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#14243a" />
+    <meta name="description" content="Gabriel Valdez's personal 30-day digital skills and career development learning hub." />
+    <title>Gabriel Valdez's Learning Hub</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#dashboard" data-route="dashboard" aria-label="Gabriel Valdez's Learning Hub dashboard">
+          <span class="brand-mark" aria-hidden="true">G</span>
+          <span class="brand-copy"><strong>Gabriel</strong><span>Learning Hub</span></span>
+        </a>
+        <div class="sidebar-label">WORKSPACE</div>
+        <nav class="sidebar-nav">
+          <button class="nav-link" data-route="dashboard"><span class="nav-icon" data-icon="grid"></span><span>Dashboard</span></button>
+          <button class="nav-link" data-route="learning"><span class="nav-icon" data-icon="book"></span><span>My Learning Plan</span><span class="nav-count">30</span></button>
+          <button class="nav-link" data-route="academy"><span class="nav-icon" data-icon="compass"></span><span>Learning Academy</span></button>
+          <button class="nav-link" data-route="routine"><span class="nav-icon" data-icon="clock"></span><span>Daily Schedule</span></button>
+          <button class="nav-link" data-route="applications"><span class="nav-icon" data-icon="briefcase"></span><span>Job Applications</span></button>
+          <button class="nav-link" data-route="portfolio"><span class="nav-icon" data-icon="layers"></span><span>My Portfolio</span></button>
+          <button class="nav-link" data-route="progress"><span class="nav-icon" data-icon="chart"></span><span>Progress Report</span></button>
+        </nav>
+        <div class="sidebar-label sidebar-label-lower">PREFERENCES</div>
+        <nav class="sidebar-nav">
+          <button class="nav-link" data-route="settings"><span class="nav-icon" data-icon="settings"></span><span>Settings</span></button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="sidebar-program-icon" aria-hidden="true"><span data-icon="sparkles"></span></div>
+          <div><strong>30-day journey</strong><span>Dec 1 – Dec 30, 2026</span></div>
+        </div>
+      </aside>
+      <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+      <div class="workspace">
+        <header class="topbar">
+          <div class="topbar-leading">
+            <button class="icon-button mobile-menu-button" id="mobile-menu-button" aria-label="Open navigation" aria-expanded="false">
+              <span data-icon="menu"></span>
+            </button>
+            <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong id="page-title">Dashboard</strong></div>
+          </div>
+          <div class="topbar-trailing">
+            <div class="date-display"><span class="date-dot"></span><span id="topbar-date"></span></div>
+            <div class="avatar" aria-label="Gabriel Valdez">G</div>
+          </div>
+        </header>
+        <main id="main-content" tabindex="-1"></main>
+      </div>
+    </div>
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
+
