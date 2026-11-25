@@ -1,8 +1,9 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "jena-learning-hub-v1";
-  const PROGRAM_YEAR = 2026;
+  const STORAGE_KEY = "gabriel-learning-hub-v2";
+  const LEGACY_STORAGE_KEY = "jena-learning-hub-v1";
+  const PROGRAM_YEAR = 2027;
   const LESSONS = [
     { day: 1, track: "SEO", title: "SEO Fundamentals", tasks: ["Understand what SEO is.", "Learn how search engines work.", "Understand crawling, indexing, and ranking.", "Learn search intent.", "Study Google's SEO Starter Guide."] },
     { day: 2, track: "SEO", title: "Keyword Research", tasks: ["Understand short-tail and long-tail keywords.", "Learn search volume and keyword difficulty.", "Practice finding 20 keywords.", "Learn keyword mapping."] },
@@ -37,54 +38,125 @@
   ];
 
   const TRACKS = [
-    { id: "SEO", title: "SEO Specialist", short: "SEO", description: "Search visibility, keyword research, and technical foundations.", icon: "search", tone: "blue" },
-    { id: "GoHighLevel", title: "GoHighLevel Specialist", short: "GoHighLevel", description: "CRM setup, funnels, pipelines, and automation.", icon: "workflow", tone: "green" },
-    { id: "HubSpot", title: "HubSpot Specialist", short: "HubSpot", description: "Sales and service hubs, contacts, and deal management.", icon: "hub", tone: "orange" },
-    { id: "CRM", title: "CRM Specialist", short: "CRM", description: "Customer lifecycle, operations, reporting, and data hygiene.", icon: "users", tone: "purple" },
-    { id: "AI Support", title: "AI Support Specialist", short: "AI Support", description: "Practical AI, prompt writing, and customer support workflows.", icon: "sparkles", tone: "teal" },
-    { id: "Career", title: "Portfolio & Career", short: "Career", description: "Portfolio projects and the final career readiness review.", icon: "briefcase", tone: "navy" }
+    { id: "ghl", title: "GoHighLevel Specialist", short: "GoHighLevel", description: "CRM setup, funnels, pipelines, workflows, and integrations.", icon: "workflow", tone: "green" },
+    { id: "crm", title: "CRM Specialist", short: "CRM", description: "HubSpot, Salesforce, Zoho, Pipedrive, and Freshsales.", icon: "users", tone: "purple" },
+    { id: "api", title: "API Integration Specialist", short: "APIs", description: "REST, HTTP, JSON, authentication, webhooks, and testing.", icon: "workflow", tone: "blue" },
+    { id: "seo", title: "SEO Specialist", short: "SEO", description: "Search visibility, technical foundations, and content.", icon: "search", tone: "orange" },
+    { id: "ai", title: "AI Support Specialist", short: "AI Support", description: "Prompting, support workflows, and practical business AI.", icon: "sparkles", tone: "teal" },
+    { id: "web", title: "Website Development & Technical Skills", short: "Web Development", description: "HTML, CSS, JavaScript, WordPress, GitHub, and Codex.", icon: "hub", tone: "navy" }
   ];
 
   const PHASES = [
-    { title: "SEO Specialist", range: "December 1–7", start: 1, end: 7, tone: "blue" },
-    { title: "GoHighLevel Specialist", range: "December 8–14", start: 8, end: 14, tone: "green" },
-    { title: "HubSpot and CRM Specialist", range: "December 15–21", start: 15, end: 21, tone: "orange" },
-    { title: "AI Support and Portfolio Development", range: "December 22–30", start: 22, end: 30, tone: "purple" }
+    { title: "Search and Website Foundations", range: "Sessions 1–7 · follow at your own pace", start: 1, end: 7, tone: "blue" },
+    { title: "GoHighLevel Systems", range: "Sessions 8–14 · practice as you learn", start: 8, end: 14, tone: "green" },
+    { title: "CRM Workflows", range: "Sessions 15–21 · repeat or adjust anytime", start: 15, end: 21, tone: "orange" },
+    { title: "AI, Portfolio, and Career Practice", range: "Sessions 22–30 · revisit whenever useful", start: 22, end: 30, tone: "purple" }
   ];
 
-  const ACADEMIES = [
-    { name: "Google Search Central", category: "SEO", icon: "search", description: "Official documentation and guidance for improving a site's presence in Google Search.", url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide" },
-    { name: "Google Search Console", category: "SEO", icon: "chart", description: "Explore search performance, indexing reports, and site health tools.", url: "https://search.google.com/search-console/about" },
-    { name: "Google Skillshop", category: "SEO", icon: "graduation", description: "Google's online training hub for its professional tools and platforms.", url: "https://skillshop.withgoogle.com/" },
-    { name: "Semrush Academy", category: "SEO", icon: "book", description: "Courses and lessons covering SEO, content, and digital marketing.", url: "https://www.semrush.com/academy/" },
-    { name: "Ahrefs Academy", category: "SEO", icon: "compass", description: "Practical SEO learning resources from the Ahrefs team.", url: "https://ahrefs.com/academy" },
-    { name: "HighLevel Official Website", category: "GoHighLevel", icon: "workflow", description: "Product information and platform resources for HighLevel users.", url: "https://www.gohighlevel.com/" },
-    { name: "HighLevel Help Center", category: "GoHighLevel", icon: "lifeBuoy", description: "Search setup instructions and product support documentation.", url: "https://help.gohighlevel.com/" },
-    { name: "HighLevel Certified Admin", category: "GoHighLevel", icon: "badge", description: "Information about HighLevel's Certified Admin learning path.", url: "https://certified.gohighlevel.com/" },
-    { name: "HubSpot Academy", category: "HubSpot", icon: "graduation", description: "Training resources for marketing, sales, service, and CRM tools.", url: "https://academy.hubspot.com/" },
-    { name: "HubSpot Certifications", category: "HubSpot", icon: "badge", description: "Browse HubSpot's certification catalog and course requirements.", url: "https://academy.hubspot.com/certification-overview" },
-    { name: "HubSpot CRM", category: "HubSpot", icon: "hub", description: "Explore HubSpot's CRM platform and its product overview.", url: "https://www.hubspot.com/products/crm" },
-    { name: "Salesforce Trailhead", category: "CRM", icon: "mountain", description: "Guided modules and hands-on learning for Salesforce products and CRM concepts.", url: "https://trailhead.salesforce.com/" },
-    { name: "Zendesk Training", category: "CRM", icon: "lifeBuoy", description: "Training resources for customer service and support workflows.", url: "https://training.zendesk.com/" },
-    { name: "OpenAI Academy", category: "AI", icon: "sparkles", description: "Learning resources to build practical AI skills and understand AI tools.", url: "https://academy.openai.com/" },
-    { name: "Microsoft Learn", category: "AI", icon: "book", description: "Training paths and documentation across Microsoft's technology topics.", url: "https://learn.microsoft.com/training/" },
-    { name: "Google Cloud Skills Boost", category: "AI", icon: "cloud", description: "Hands-on labs and learning paths for Google Cloud technologies.", url: "https://www.cloudskillsboost.google/" }
+  const academyPath = (id, title, description, iconName, tone, lessons) => ({
+    id, title, description, icon: iconName, tone,
+    lessons: lessons.map(([titleText, objective, assignment, url], index) => ({
+      id: `${id}-${index + 1}`, title: titleText, objective, assignment,
+      description: `Study ${titleText.toLowerCase()} using the linked free official material, then capture the key idea in your notes.`,
+      url
+    }))
+  });
+  const ACADEMY_PATHS = [
+    academyPath("ghl", "GoHighLevel Specialist", "Learn the CRM, marketing tools, automation, and integrations using the official free help center and API docs.", "workflow", "green", [
+      ["HighLevel fundamentals and account layout", "Describe locations, settings, and the main areas of the platform.", "Make a one-page map of the navigation and explain what each area is for.", "https://help.gohighlevel.com/support/solutions"],
+      ["CRM setup and contact records", "Create a clean contact structure with fields, tags, and notes.", "Design a sample contact record and a short data-entry checklist.", "https://help.gohighlevel.com/support/solutions"],
+      ["Contacts, filters, and Smart Lists", "Use filters and saved lists to segment contacts by useful criteria.", "Write three Smart List rules for a sample business.", "https://help.gohighlevel.com/support/solutions"],
+      ["Opportunities and Pipelines", "Explain pipeline stages and how opportunities move through them.", "Draft a five-stage pipeline and define an entry rule for each stage.", "https://help.gohighlevel.com/support/solutions"],
+      ["Forms and Surveys", "Choose fields and map submissions into CRM records.", "Sketch a lead form and list its field-to-contact mappings.", "https://help.gohighlevel.com/support/solutions"],
+      ["Funnels and Websites", "Describe pages, forms, navigation, and the visitor journey.", "Create a landing-page outline with a clear call to action.", "https://help.gohighlevel.com/support/solutions"],
+      ["Workflows and Automation", "Explain workflow enrollment, trigger conditions, actions, and testing.", "Diagram a lead follow-up workflow with a stop condition.", "https://help.gohighlevel.com/support/solutions/articles/155000002288-getting-started-with-workflows"],
+      ["Workflow triggers and actions", "Select a trigger and actions that fit a business process.", "Write a trigger/action table for a form submission.", "https://help.gohighlevel.com/support/solutions/articles/155000002445"],
+      ["Email and SMS automation", "Plan permission-aware email/SMS follow-up and reply handling.", "Draft a three-step follow-up sequence with an opt-out and human handoff.", "https://help.gohighlevel.com/support/solutions"],
+      ["Calendars and appointment booking", "Explain availability, booking, reminders, and follow-up.", "Map a booking flow from availability to post-appointment follow-up.", "https://help.gohighlevel.com/support/solutions"],
+      ["Snapshots and reusable setups", "Identify which assets can be captured and reused in a snapshot.", "Create a checklist for a reusable sample business setup.", "https://help.gohighlevel.com/support/solutions/articles/48000982511-snapshots-overview"],
+      ["Integrations and connected apps", "Map what data should move between HighLevel and another tool.", "Draw an integration flow and list where errors could occur.", "https://help.gohighlevel.com/support/solutions"],
+      ["Troubleshooting workflow runs", "Trace enrollment, filters, action errors, and test records.", "Build a step-by-step workflow troubleshooting checklist.", "https://help.gohighlevel.com/support/solutions/articles/155000002288-getting-started-with-workflows"],
+      ["Webhooks", "Explain an event payload, endpoint, response, and retry handling.", "Draft a webhook event map with sample JSON fields.", "https://help.gohighlevel.com/support/solutions/articles/155000003299-workflow-action-webhook-outbound-"],
+      ["HighLevel API integration", "Find endpoints and understand supported auth and API versions.", "Plan a safe read-only API integration and document its request/response.", "https://marketplace.gohighlevel.com/docs/"]
+    ]),
+    academyPath("crm", "CRM Specialist", "Compare five CRMs and practice contact management, sales pipelines, reporting, and integrations.", "users", "purple", [
+      ["CRM fundamentals and customer lifecycle", "Explain lead, contact, opportunity, customer, and lifecycle stages.", "Draw a lifecycle from first inquiry to repeat customer.", "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm"],
+      ["HubSpot: contacts and properties", "Organize records with properties, activities, and lists.", "Design a compact contact schema for a sample company.", "https://academy.hubspot.com/lessons/managing-your-contacts-with-the-hubspot-crm"],
+      ["HubSpot: leads, deals, and pipeline", "Track lead qualification and sales progress in a pipeline.", "Create stage definitions and a sample deal handoff.", "https://academy.hubspot.com/courses/building-your-business-with-hubspot-smart-crm"],
+      ["Salesforce: CRM basics", "Recognize Salesforce records and standard sales processes.", "Map accounts, contacts, leads, and opportunities for a sample business.", "https://trailhead.salesforce.com/content/learn/modules/crm_basics"],
+      ["Salesforce: lead management and pipeline", "Describe how leads become opportunities and how stages are tracked.", "Write a lead qualification checklist and pipeline stage guide.", "https://trailhead.salesforce.com/"],
+      ["Zoho CRM: setup and contact management", "Organize modules, fields, contacts, and lead records.", "Draft field and data-quality rules for a sample CRM.", "https://www.zoho.com/crm/resources/"],
+      ["Zoho CRM: sales process and automation", "Map a repeatable process using stages, tasks, and automation rules.", "Diagram a lead assignment and follow-up process.", "https://www.zoho.com/crm/resources/"],
+      ["Pipedrive: deals and pipeline", "Use deals, activities, and stages to follow sales work.", "Create a sample pipeline with exit criteria for each stage.", "https://www.pipedrive.com/en/academy"],
+      ["Freshsales: contacts and deals", "Describe contact, account, deal, and activity records.", "Map a small sales workflow and list useful CRM fields.", "https://support.freshsales.io/support/solutions/articles/217734-how-to-use-contacts"],
+      ["CRM automation, reporting, and integrations", "Choose useful metrics and describe a safe CRM integration.", "Build a sample weekly report outline and integration data map.", "https://academy.hubspot.com/"]
+    ]),
+    academyPath("api", "API Integration Specialist", "Build a clear foundation in HTTP, REST, JSON, authentication, webhooks, and CRM integrations.", "workflow", "blue", [
+      ["What is an API?", "Explain how software uses an API to exchange data.", "Describe one business task as a request and response.", "https://learning.postman.com/docs/getting-started/overview/"],
+      ["How APIs work: client, server, and endpoint", "Identify the client, server, resource, and endpoint in a request.", "Label the parts of an example API URL.", "https://learning.postman.com/docs/getting-started/overview/"],
+      ["HTTP requests and responses", "Read status codes, headers, and response bodies.", "Annotate a sample request and response.", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"],
+      ["HTTP methods: GET, POST, PUT, PATCH, DELETE", "Choose a method for reading, creating, replacing, updating, or removing data.", "Create a method-to-task reference table.", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods"],
+      ["JSON data", "Read and write objects, arrays, strings, numbers, and booleans.", "Write valid sample JSON for a contact record.", "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON"],
+      ["Endpoints, parameters, and pagination", "Identify path parameters, query parameters, and page controls.", "Design a paginated contact search request.", "https://learning.postman.com/docs/getting-started/first-steps/sending-the-first-request/"],
+      ["Authentication and API keys", "Explain why API credentials must be protected.", "Write a credential-handling checklist; never put a real key in notes.", "https://learning.postman.com/docs/sending-requests/authorization/authorization/"],
+      ["Bearer tokens", "Add a bearer token through an authorization header.", "Draft a placeholder request using a variable, not a real secret.", "https://learning.postman.com/docs/sending-requests/authorization/authorization/"],
+      ["OAuth 2.0", "Explain authorization, scopes, access tokens, and consent.", "Draw a simplified OAuth authorization flow.", "https://learning.postman.com/docs/sending-requests/authorization/oauth-20/"],
+      ["Requests and responses in Postman", "Send a safe request and inspect its response.", "Use a public practice API and record the status and fields returned.", "https://learning.postman.com/docs/getting-started/first-steps/sending-the-first-request/"],
+      ["Webhooks and event-driven integrations", "Distinguish a webhook push from polling an API.", "Design a webhook payload for a new CRM contact event.", "https://learning.postman.com/docs/sending-requests/webhooks/"],
+      ["API testing and collections", "Organize requests and check expected status and response fields.", "Create a small collection outline with a happy-path check.", "https://learning.postman.com/docs/collections/collections-overview/"],
+      ["Connect CRM platforms with APIs", "Map records and fields between two CRM systems.", "Create a field mapping and duplicate-handling plan.", "https://learning.postman.com/"],
+      ["GoHighLevel API integration", "Find current endpoints and choose supported authentication.", "Plan a read-only contact lookup using the current API docs.", "https://marketplace.gohighlevel.com/docs/"],
+      ["Troubleshoot API errors", "Use status codes, validation messages, rate limits, and logs to diagnose issues.", "Write a checklist for 400, 401, 403, 404, 429, and 500 responses.", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"]
+    ]),
+    academyPath("seo", "SEO Specialist", "Practice search fundamentals, content, technical SEO, Search Console, and Analytics with free Google materials.", "search", "orange", [
+      ["SEO fundamentals and search intent", "Explain crawling, indexing, ranking, and intent.", "Classify ten sample searches by intent.", "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"],
+      ["Keyword research and topic mapping", "Group related searches into useful content topics.", "Build a small keyword-to-page map using free search observations.", "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"],
+      ["On-page SEO and page structure", "Improve titles, headings, links, and page descriptions for people and search.", "Review one page and write a prioritized improvement list.", "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"],
+      ["Content quality and optimization", "Plan useful, original content that answers a visitor's need.", "Create a content brief with audience, intent, outline, and sources.", "https://developers.google.com/search/docs/fundamentals/creating-helpful-content"],
+      ["Technical SEO and indexing", "Understand crawl access, indexing signals, sitemaps, and canonical URLs.", "Prepare a technical SEO audit checklist for a small site.", "https://developers.google.com/search/docs/crawling-indexing"],
+      ["Website performance and mobile", "Review page experience and performance basics.", "Record three measurable optimization opportunities for a sample page.", "https://web.dev/learn/performance/"],
+      ["Google Search Console", "Use search performance and indexing reports to ask useful questions.", "Create a weekly Search Console review checklist.", "https://search.google.com/search-console/about"],
+      ["Google Analytics and measurement", "Define a conversion and choose a suitable measurement view.", "Draft a simple traffic and conversion report outline.", "https://skillshop.withgoogle.com/"]
+    ]),
+    academyPath("ai", "AI Support Specialist", "Learn AI fundamentals, prompting, support workflows, and practical business automation from free official materials.", "sparkles", "teal", [
+      ["AI and generative AI fundamentals", "Describe what generative AI can do and where it can fail.", "Write a short human-reviewed AI use policy for a small business.", "https://academy.openai.com/"],
+      ["Prompt structure and clear instructions", "Specify task, context, constraints, and desired output.", "Write and refine a prompt that summarizes a fictional support request.", "https://platform.openai.com/docs/guides/prompt-engineering"],
+      ["Prompt iteration and evaluation", "Compare outputs against explicit quality criteria.", "Build a five-point checklist and evaluate two prompt versions.", "https://platform.openai.com/docs/guides/prompt-engineering"],
+      ["AI-assisted customer support", "Draft helpful responses while protecting privacy and preserving human review.", "Create sample replies for three fictional customer questions.", "https://academy.openai.com/"],
+      ["Triage, escalation, and safe handoff", "Recognize when a person should take over a conversation.", "Create a simple intent-to-escalation decision tree.", "https://academy.openai.com/"],
+      ["AI workflows and automation", "Identify useful workflow steps and points that need human approval.", "Diagram a request-to-draft-to-review support workflow.", "https://platform.openai.com/docs/guides/agents"],
+      ["ChatGPT for business operations", "Use AI to organize routine work without sharing sensitive data.", "Design a reusable weekly planning prompt using fictional data.", "https://academy.openai.com/"],
+      ["Practical AI project", "Document an AI workflow, its limits, and how success is measured.", "Build a small FAQ assistant plan with test cases and escalation rules.", "https://platform.openai.com/docs/overview"]
+    ]),
+    academyPath("web", "Website Development & Technical Skills", "Build and troubleshoot websites with free HTML, CSS, JavaScript, WordPress, GitHub, and Codex resources.", "hub", "navy", [
+      ["HTML structure and semantic elements", "Build a page structure with meaningful semantic HTML.", "Create a one-page outline with header, navigation, main, sections, and footer.", "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"],
+      ["CSS selectors, layout, and responsive design", "Style a readable responsive page using CSS layout tools.", "Create a small style guide and a mobile-first layout sketch.", "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics"],
+      ["JavaScript fundamentals", "Use variables, functions, events, and basic DOM updates.", "Add a small interactive control to a practice page.", "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting"],
+      ["Landing page development", "Organize a page around audience, value, evidence, and a clear call to action.", "Build a landing-page wireframe and content outline.", "https://www.freecodecamp.org/learn/2022/responsive-web-design/"],
+      ["Website troubleshooting and browser tools", "Inspect layout, console errors, links, and mobile behavior.", "Write a repeatable page-check checklist.", "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started"],
+      ["WordPress fundamentals", "Explain pages, posts, themes, plugins, and safe update practices.", "Plan a simple WordPress site structure and backup routine.", "https://learn.wordpress.org/"],
+      ["Elementor and page building", "Understand sections, containers, widgets, and responsive previews.", "Sketch a simple page using free documentation and a test layout.", "https://elementor.com/help/"],
+      ["Website integrations and forms", "Map a website form to a destination and verify the visitor flow.", "Document a form-to-CRM field map and test checklist.", "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form"],
+      ["Git and GitHub basics", "Explain repositories, commits, branches, and version history.", "Create a practice repository plan and write clear commit messages.", "https://docs.github.com/en/get-started/start-your-journey"],
+      ["GitHub Pages publishing", "Describe how a static site is published from a repository.", "Prepare a checklist for updating and checking a GitHub Pages site.", "https://docs.github.com/en/pages/getting-started-with-github-pages"],
+      ["Coding with Codex", "Give a coding agent a clear task, context, and review criteria.", "Write a small change request and review its proposed diff carefully.", "https://openai.com/codex/"]
+    ])
   ];
+  const ACADEMIES = ACADEMY_PATHS.flatMap((path) => path.lessons.map((lesson) => ({ ...lesson, name: lesson.title, category: path.id, icon: path.icon })));
 
-  const ROUTINE = [
-    { time: "5:00 AM – 12:30 PM", activity: "Sleep", category: "sleep", icon: "moon" },
-    { time: "12:30 PM – 1:30 PM", activity: "Wake up, meal, preparation", category: "personal", icon: "sun" },
-    { time: "1:30 PM – 2:00 PM", activity: "Exercise and personal time", category: "personal", icon: "activity" },
-    { time: "2:00 PM – 3:30 PM", activity: "Main learning session", category: "learning", icon: "book" },
-    { time: "3:30 PM – 3:45 PM", activity: "Break", category: "personal", icon: "coffee" },
-    { time: "3:45 PM – 5:15 PM", activity: "Practical exercises", category: "learning", icon: "pencil" },
-    { time: "5:15 PM – 6:00 PM", activity: "Dinner and rest", category: "personal", icon: "coffee" },
-    { time: "6:00 PM – 7:00 PM", activity: "Job hunting", category: "job", icon: "search" },
-    { time: "7:00 PM – 8:00 PM", activity: "Job applications", category: "job", icon: "briefcase" },
-    { time: "8:00 PM – 9:00 PM", activity: "Portfolio building", category: "portfolio", icon: "layers" },
-    { time: "9:00 PM – 12:00 AM", activity: "Work, church, or personal commitments", category: "personal", icon: "calendar" },
-    { time: "12:00 AM – 4:30 AM", activity: "Personal time / optional work / rest", category: "personal", icon: "moon" },
-    { time: "4:30 AM – 5:00 AM", activity: "Wind down", category: "sleep", icon: "moon" }
+  const ROUTINE_CATEGORIES = ["Learning", "Practical Project", "Job Applications", "Review", "Break / Personal", "GoHighLevel Learning", "CRM Learning", "API Learning", "SEO Learning", "AI Learning", "Website Development", "Church Activities", "Other"];
+  const EVENT_CATEGORIES = [
+    ["ghl", "GoHighLevel Learning"], ["crm", "CRM Learning"], ["api", "API Learning"], ["seo", "SEO Learning"], ["ai", "AI Learning"],
+    ["web", "Website Development"], ["job", "Job Applications"], ["project", "Practical Projects"], ["personal", "Personal Schedule"], ["church", "Church Activities"], ["other", "Other"]
+  ];
+  const DEFAULT_ROUTINE = [
+    { id: "routine-morning", activity: "Morning personal development and learning", startTime: "", endTime: "", days: [1, 2, 3, 4, 5, 6, 0], category: "Learning" },
+    { id: "routine-tech", activity: "Technical lessons", startTime: "", endTime: "", days: [1, 2, 3, 4, 5, 6], category: "Learning" },
+    { id: "routine-practice", activity: "Hands-on exercises and projects", startTime: "", endTime: "", days: [1, 2, 3, 4, 5, 6], category: "Practical Project" },
+    { id: "routine-break", activity: "Breaks and personal time", startTime: "", endTime: "", days: [1, 2, 3, 4, 5, 6, 0], category: "Break / Personal" },
+    { id: "routine-jobs", activity: "Job search and applications", startTime: "", endTime: "", days: [1, 2, 3, 4, 5], category: "Job Applications" },
+    { id: "routine-evening", activity: "GoHighLevel, CRM, API, and portfolio practice", startTime: "", endTime: "", days: [1, 2, 3, 4, 5], category: "GoHighLevel Learning" },
+    { id: "routine-review", activity: "Weekly review and plan the next week", startTime: "", endTime: "", days: [0], category: "Review" }
   ];
 
   const PROJECT_TEMPLATES = [
@@ -99,7 +171,7 @@
   const PROJECT_STATUSES = ["Not started", "In progress", "Completed", "On hold"];
   const NAV_ITEMS = [
     ["dashboard", "Dashboard"], ["learning", "My Learning Plan"], ["academy", "Learning Academy"],
-    ["routine", "Daily Schedule"], ["applications", "Job Applications"], ["portfolio", "My Portfolio"],
+    ["routine", "Daily Schedule"], ["calendar", "2027 Calendar"], ["applications", "Job Applications"], ["portfolio", "My Portfolio"],
     ["progress", "Progress Report"], ["settings", "Settings"]
   ];
 
@@ -136,7 +208,10 @@
     close: '<path d="m18 6-12 12M6 6l12 12"/>',
     download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
     calendarDays: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M8 15h.01M12 15h.01M16 15h.01M8 18h.01M12 18h.01"/>'
-    ,database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/>'
+    ,database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/>',
+    bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',
+    edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>',
+    repeat: '<path d="m17 2 4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>'
   };
 
   const icon = (name, extraClass = "") => `<svg class="icon ${extraClass}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ICONS.sparkles}</svg>`;
@@ -147,6 +222,13 @@
       lessonStatus: {},
       routine: {},
       academyStudied: {},
+      academyProgress: {},
+      academyNotes: {},
+      routineBlocks: clone(DEFAULT_ROUTINE),
+      calendarEvents: [],
+      reminderLog: [],
+      firedReminders: [],
+      notificationsEnabled: false,
       applications: [],
       projects: PROJECT_TEMPLATES.map((project) => ({ ...clone(project), startDate: "", targetDate: "", status: "Not started", checklist: {}, notes: "", evidence: null }))
     };
@@ -154,7 +236,7 @@
 
   function loadState() {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY) || "null");
       if (!saved || typeof saved !== "object") return initialState();
       const defaults = initialState();
       const storedProjects = Array.isArray(saved.projects) ? saved.projects : [];
@@ -162,6 +244,13 @@
         lessonStatus: saved.lessonStatus && typeof saved.lessonStatus === "object" ? saved.lessonStatus : {},
         routine: saved.routine && typeof saved.routine === "object" ? saved.routine : {},
         academyStudied: saved.academyStudied && typeof saved.academyStudied === "object" ? saved.academyStudied : {},
+        academyProgress: saved.academyProgress && typeof saved.academyProgress === "object" ? saved.academyProgress : {},
+        academyNotes: saved.academyNotes && typeof saved.academyNotes === "object" ? saved.academyNotes : {},
+        routineBlocks: Array.isArray(saved.routineBlocks) ? saved.routineBlocks : clone(DEFAULT_ROUTINE),
+        calendarEvents: Array.isArray(saved.calendarEvents) ? saved.calendarEvents : [],
+        reminderLog: Array.isArray(saved.reminderLog) ? saved.reminderLog : [],
+        firedReminders: Array.isArray(saved.firedReminders) ? saved.firedReminders : [],
+        notificationsEnabled: Boolean(saved.notificationsEnabled),
         applications: Array.isArray(saved.applications) ? saved.applications : [],
         projects: defaults.projects.map((base) => {
           const stored = storedProjects.find((item) => item.id === base.id) || {};
@@ -176,6 +265,9 @@
 
   let state = loadState();
   let currentRoute = "dashboard";
+  let calendarCursor = new Date(Date.UTC(2027, 0, 1));
+  let calendarSelectedDate = "2027-01-01";
+  let calendarView = "month";
   let toastTimer;
 
   function saveState(showError = true) {
@@ -190,16 +282,17 @@
   }
 
   function todayKey() {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
   }
 
   function programDate(day) {
-    return new Date(PROGRAM_YEAR, 11, day);
+    return new Date(PROGRAM_YEAR, 0, day);
   }
 
   function formatDate(date, options = { month: "short", day: "numeric", year: "numeric" }) {
-    return new Intl.DateTimeFormat("en-US", options).format(date);
+    return new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Asia/Manila" }).format(date);
   }
 
   function daysUntilStart() {
@@ -211,7 +304,7 @@
   }
 
   function greeting() {
-    const hour = new Date().getHours();
+    const hour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", hour: "numeric", hour12: false }).format(new Date()));
     if (hour < 12) return "Good morning";
     if (hour < 17) return "Good afternoon";
     return "Good evening";
@@ -222,19 +315,18 @@
     const completedLessons = LESSONS.reduce((sum, day) => sum + day.tasks.reduce((n, _, index) => n + (state.lessonStatus[`d${day.day}-l${index}`] ? 1 : 0), 0), 0);
     const completedDays = LESSONS.reduce((sum, day) => sum + (day.tasks.every((_, index) => state.lessonStatus[`d${day.day}-l${index}`]) ? 1 : 0), 0);
     const completedProjects = state.projects.filter((project) => project.status === "Completed").length;
-    const studiedResources = ACADEMIES.filter((resource) => state.academyStudied[resource.name]).length;
+    const studiedResources = ACADEMIES.filter((lesson) => state.academyProgress[lesson.id]).length;
     const todayRoutine = state.routine[todayKey()] || {};
-    const completedRoutine = ROUTINE.reduce((sum, item) => sum + (todayRoutine[item.activity] ? 1 : 0), 0);
+    const weekday = new Date(`${todayKey()}T12:00:00+08:00`).getUTCDay();
+    const todaysBlocks = state.routineBlocks.filter((item) => (item.days || []).includes(weekday));
+    const completedRoutine = todaysBlocks.reduce((sum, item) => sum + (todayRoutine[item.id] ? 1 : 0), 0);
     const submittedStatuses = new Set(["Applied", "Interview", "Assessment", "Hired", "Rejected", "Follow-up needed"]);
     const applicationsSubmitted = state.applications.filter((application) => submittedStatuses.has(application.status)).length;
-    const trackCounts = Object.fromEntries(TRACKS.map((track) => [track.id, { total: 0, completed: 0 }]));
-    LESSONS.forEach((day) => {
-      trackCounts[day.track].total += day.tasks.length;
-      day.tasks.forEach((_, index) => {
-        if (state.lessonStatus[`d${day.day}-l${index}`]) trackCounts[day.track].completed += 1;
-      });
-    });
-    return { totalLessons, completedLessons, completedDays, completedProjects, studiedResources, completedRoutine, applicationsSubmitted, trackCounts };
+    const trackCounts = Object.fromEntries(TRACKS.map((track) => {
+      const path = ACADEMY_PATHS.find((item) => item.id === track.id);
+      return [track.id, { total: path?.lessons.length || 0, completed: path?.lessons.filter((lesson) => state.academyProgress[lesson.id]).length || 0 }];
+    }));
+    return { totalLessons, completedLessons, completedDays, completedProjects, studiedResources, totalAcademyLessons: ACADEMIES.length, completedRoutine, totalRoutine: todaysBlocks.length, applicationsSubmitted, trackCounts };
   }
 
   function percentage(done, total) {
@@ -252,10 +344,6 @@
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-  }
-
-  function dateForDay(day) {
-    return formatDate(programDate(day), { weekday: "short", month: "short", day: "numeric" });
   }
 
   function showToast(message, kind = "success") {
@@ -278,6 +366,86 @@
     return `<article class="metric-card"><div class="metric-icon ${tone}">${icon(iconName)}</div><div class="metric-copy"><span class="metric-label">${label}</span><strong>${value}</strong><span class="metric-note">${note}</span></div></article>`;
   }
 
+  function isoDateUTC(date) {
+    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`;
+  }
+
+  function dateInManila(dateKey, hour = 12) {
+    return new Date(`${dateKey}T${String(hour).padStart(2, "0")}:00:00+08:00`);
+  }
+
+  function activeRoutineBlocks(dateKey) {
+    const weekday = dateInManila(dateKey).getUTCDay();
+    return state.routineBlocks.filter((item) => (item.days || []).includes(weekday)).slice().sort((a, b) => (a.startTime || "99:99").localeCompare(b.startTime || "99:99"));
+  }
+
+  function routineTime(item) {
+    if (!item.startTime && !item.endTime) return "Flexible time";
+    const showTime = (value) => value ? new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" }).format(new Date(`2027-01-01T${value}:00+08:00`)) : "Set time";
+    return `${showTime(item.startTime)}${item.endTime ? ` – ${showTime(item.endTime)}` : ""}`;
+  }
+
+  function daysLabel(days = []) {
+    return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].filter((_, index) => days.includes(index)).join(", ") || "No days selected";
+  }
+
+  function eventOccursOn(event, dateKey) {
+    if (!event.date || dateKey < event.date) return false;
+    if (!event.recurrence || event.recurrence === "none") return event.date === dateKey;
+    const start = new Date(`${event.date}T12:00:00+08:00`);
+    const date = new Date(`${dateKey}T12:00:00+08:00`);
+    const dayDifference = Math.floor((Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate())) / 86400000);
+    if (event.recurrence === "daily") return true;
+    if (event.recurrence === "weekly") return dayDifference % 7 === 0;
+    if (event.recurrence === "monthly") return new Date(`${dateKey}T12:00:00+08:00`).getUTCDate() === start.getUTCDate();
+    return false;
+  }
+
+  function eventsForDate(dateKey) {
+    return state.calendarEvents.filter((event) => eventOccursOn(event, dateKey)).sort((a, b) => (a.startTime || "").localeCompare(b.startTime || ""));
+  }
+
+  function eventCategoryName(category) {
+    return EVENT_CATEGORIES.find(([id]) => id === category)?.[1] || "Other";
+  }
+
+  function eventTime(event) {
+    const showTime = (value) => value ? new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", hour: "numeric", minute: "2-digit" }).format(new Date(`2027-01-01T${value}:00+08:00`)) : "Time not set";
+    return `${showTime(event.startTime)}${event.endTime ? ` – ${showTime(event.endTime)}` : ""}`;
+  }
+
+  function upcomingEvents(limit = 5) {
+    const today = todayKey();
+    const first = today < "2027-01-01" ? "2027-01-01" : today;
+    const cursor = new Date(`${first}T12:00:00+08:00`);
+    const results = [];
+    for (let offset = 0; offset < 366 && results.length < limit; offset += 1) {
+      const date = new Date(cursor.getTime() + offset * 86400000);
+      const dateKey = isoDateUTC(new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())));
+      if (!dateKey.startsWith("2027-")) break;
+      eventsForDate(dateKey).forEach((event) => { if (results.length < limit) results.push({ event, date: formatDate(dateInManila(dateKey), { month: "short", day: "numeric" }) }); });
+    }
+    return results;
+  }
+
+  function unreadReminderCount() {
+    return state.reminderLog.filter((item) => !item.read).length;
+  }
+
+  function notificationButtonLabel() {
+    if (typeof Notification === "undefined") return "Notifications unavailable";
+    if (Notification.permission === "denied") return "Notifications blocked in browser settings";
+    return state.notificationsEnabled && Notification.permission === "granted" ? "Disable Notifications" : "Enable Notifications";
+  }
+
+  function renderAgendaItems(items, emptyText) {
+    if (!items.length) return `<p class="empty-copy">${escapeHtml(emptyText)}</p>`;
+    return `<div class="agenda-item-list">${items.map((item) => {
+      const categoryClass = String(item.category || "Other").toLowerCase().replace(/[^a-z]+/g, "-");
+      return `<div class="agenda-item"><span class="agenda-category-dot category-${categoryClass}"></span><span class="agenda-item-main"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.category || "Schedule")}</small></span><span class="agenda-item-time">${escapeHtml(item.time || "Flexible time")}</span>${item.done ? '<span class="agenda-done">Done</span>' : ""}${item.eventId ? `<button class="text-button" data-action="edit-event" data-id="${escapeHtml(item.eventId)}">Edit</button>` : ""}</div>`;
+    }).join("")}</div>`;
+  }
+
   function trackCard(track) {
     const c = counts().trackCounts[track.id];
     const pct = percentage(c.completed, c.total);
@@ -286,43 +454,50 @@
       <h3>${track.title}</h3><p>${track.description}</p>
       <div class="track-progress-copy"><span><strong data-track-done="${escapeHtml(track.id)}">${c.completed}</strong> of <span data-track-total="${escapeHtml(track.id)}">${c.total}</span> lessons</span><span data-track-pct-copy="${escapeHtml(track.id)}">${pct}%</span></div>
       ${progressBar(pct, track.tone, `${track.title} progress`)}
-      <button class="text-button track-open" data-route="learning" data-track="${escapeHtml(track.id)}">View learning plan <span aria-hidden="true">→</span></button>
+      <button class="text-button track-open" data-route="academy" data-track="${escapeHtml(track.id)}">Open learning path <span aria-hidden="true">→</span></button>
     </article>`;
   }
 
   function renderDashboard() {
     const c = counts();
-    const remaining = daysUntilStart();
-    const status = remaining > 0 ? `Your program begins in ${remaining} ${remaining === 1 ? "day" : "days"}` : remaining === 0 ? "Your learning journey starts today" : "Your December journey is underway";
     const submitted = c.applicationsSubmitted;
-    return `${topLevelHeader("YOUR LEARNING SPACE", `${greeting()}, Gabriel!`, "Welcome to your December Learning Journey.", `<span class="program-pill"><span class="status-dot"></span>${escapeHtml(status)}</span>`)}
+    const todayBlocks = activeRoutineBlocks(todayKey());
+    const todayEvents = eventsForDate(todayKey());
+    const upcoming = upcomingEvents(3);
+    const reminderAction = `<button class="button button-outline notification-bell" data-action="scroll-reminders" aria-label="Notification bell, ${unreadReminderCount()} unread reminders">${icon("bell")} Reminders <span class="notification-count">${unreadReminderCount()}</span></button>`;
+    return `${topLevelHeader("YOUR LEARNING SPACE", `${greeting()}, Gabriel!`, "Your learning, schedule, projects, and job search in one place.", reminderAction)}
       <section class="hero-progress card">
-        <div class="hero-progress-copy"><div class="hero-title-line"><div class="hero-icon">${icon("calendarDays")}</div><div><span class="eyebrow">DECEMBER 1–30, 2026</span><h2>December Learning Progress</h2></div></div>
+        <div class="hero-progress-copy"><div class="hero-title-line"><div class="hero-icon">${icon("calendarDays")}</div><div><span class="eyebrow">YOUR SELF-PACED LEARNING PATHS</span><h2>Learning Progress</h2></div></div>
           <p>Small steps, steady practice, and a portfolio you can show with confidence.</p>
-          <div class="hero-progress-foot"><span><strong data-value="completedDays">${c.completedDays}</strong> / 30 days completed</span><span><strong data-value="completedLessons">${c.completedLessons}</strong> / <span data-value="totalLessons">${c.totalLessons}</span> lessons completed</span></div>
+          <div class="hero-progress-foot"><span><strong data-value="studiedResources">${c.studiedResources}</strong> / ${c.totalAcademyLessons} academy lessons completed</span><span>Asia/Manila schedule</span></div>
         </div>
-        <div class="hero-progress-score"><strong data-value="overallPercent">${percentage(c.completedLessons, c.totalLessons)}%</strong><span>overall progress</span>${progressBar(percentage(c.completedLessons, c.totalLessons), "emerald", "Monthly learning progress")}</div>
+        <div class="hero-progress-score"><strong data-value="academyPercent">${percentage(c.studiedResources, c.totalAcademyLessons)}%</strong><span>academy progress</span>${progressBar(percentage(c.studiedResources, c.totalAcademyLessons), "emerald", "Academy learning progress")}</div>
       </section>
       <section class="metric-grid" aria-label="Learning overview">
-        ${metricCard("calendarDays", "Days completed", `<span data-value="completedDays">${c.completedDays}</span><small> / 30</small>`, "Complete every task in a day", "blue")}
-        ${metricCard("book", "Lessons completed", `<span data-value="completedLessons">${c.completedLessons}</span><small> / <span data-value="totalLessons">${c.totalLessons}</span></small>`, "Across your learning plan", "green")}
+        ${metricCard("book", "Academy lessons", `<span data-value="studiedResources">${c.studiedResources}</span><small> / ${c.totalAcademyLessons}</small>`, "Across six learning paths", "green")}
+        ${metricCard("calendarDays", "Today’s routine", `<span data-value="completedRoutine">${c.completedRoutine}</span><small> / <span data-value="totalRoutine">${c.totalRoutine}</span></small>`, "Your editable weekly plan", "blue")}
         ${metricCard("briefcase", "Applications submitted", `<span data-value="applicationsSubmitted">${submitted}</span>`, "Tracked in your job pipeline", "purple")}
         ${metricCard("layers", "Projects completed", `<span data-value="completedProjects">${c.completedProjects}</span><small> / 5</small>`, "Portfolio projects marked complete", "orange")}
       </section>
-      <section class="section-block"><div class="section-heading"><div><div class="eyebrow">YOUR LEARNING PATHS</div><h2>Build skills that move you forward</h2></div><button class="text-button" data-route="learning">Open full plan <span aria-hidden="true">→</span></button></div>
-        <div class="track-grid">${TRACKS.slice(0, 5).map(trackCard).join("")}</div>
+      <section class="section-block"><div class="section-heading"><div><div class="eyebrow">YOUR LEARNING PATHS</div><h2>Build skills that move you forward</h2></div><button class="text-button" data-route="academy">Open Learning Academy <span aria-hidden="true">→</span></button></div>
+        <div class="track-grid">${TRACKS.map(trackCard).join("")}</div>
       </section>
+      <section class="dashboard-agenda-grid section-block">
+        <article class="card dashboard-agenda-card"><div class="section-heading"><div><div class="eyebrow">${escapeHtml(formatDate(new Date(`${todayKey()}T12:00:00+08:00`), { weekday: "long", month: "long", day: "numeric" }))}</div><h2>Today’s learning schedule</h2></div><button class="text-button" data-route="routine">Edit routine →</button></div>${renderAgendaItems(todayBlocks.map((block) => ({ title: block.activity, time: routineTime(block), category: block.category, done: Boolean((state.routine[todayKey()] || {})[block.id]) })), "Your weekly routine is clear today.")}</article>
+        <article class="card dashboard-agenda-card"><div class="section-heading"><div><div class="eyebrow">PERSONAL SCHEDULE</div><h2>Today’s calendar</h2></div><button class="text-button" data-route="calendar">Open 2027 Calendar →</button></div>${renderAgendaItems(todayEvents.map((entry) => ({ title: entry.event.title, time: eventTime(entry.event), category: eventCategoryName(entry.event.category) })), "No calendar events today.")}</article>
+      </section>
+      <section class="card reminder-panel section-block" id="reminder-panel"><div class="section-heading"><div><div class="eyebrow">REMINDERS</div><h2>Upcoming schedules</h2></div><button class="button button-outline" data-action="enable-notifications">${icon("bell")} ${notificationButtonLabel()}</button></div><p class="muted-copy">Browser alerts work while this site is open. A closed GitHub Pages site cannot schedule reliable push alerts: that needs a backend with push subscriptions and a scheduled worker. Browsers may also delay alerts if they suspend this tab.</p>${typeof Notification === "undefined" ? '<p class="muted-copy">This browser does not support the Notifications API. In-app schedule reminders remain available while the page is open.</p>' : Notification.permission === "denied" ? '<p class="notification-help">Notifications are blocked. Allow them in this site’s browser settings, then return here and enable them.</p>' : ""}${upcoming.length ? renderAgendaItems(upcoming.map(({ event, date }) => ({ title: event.title, time: `${date} · ${eventTime(event)}`, category: eventCategoryName(event.category), eventId: event.id })), "No upcoming reminders are scheduled.") : '<p class="empty-copy">No upcoming calendar events.</p>'}<div class="reminder-inbox"><div class="section-heading"><div><div class="eyebrow">NOTIFICATION INBOX · ${unreadReminderCount()} UNREAD</div><h3>Recent reminders</h3></div>${unreadReminderCount() ? '<button class="text-button" data-action="mark-reminders-read">Mark all read</button>' : ""}</div>${renderReminderLog()}</div></section>
       <section class="bottom-grid">
-        <article class="next-step-card card"><div class="next-step-icon">${icon("sparkles")}</div><div><div class="eyebrow">A GOOD PLACE TO START</div><h3>Make your next learning session count</h3><p>Open today's plan, work through one task at a time, and your progress will update automatically.</p><button class="button button-primary" data-route="learning">Open my learning plan <span aria-hidden="true">→</span></button></div></article>
-        <article class="academy-callout card"><div class="callout-icon">${icon("compass")}</div><div class="eyebrow">KEEP EXPLORING</div><h3>Learn from the source</h3><p>Find official academies, documentation, and support resources in one place.</p><button class="button button-secondary" data-route="academy">Browse the academy</button></article>
+        <article class="next-step-card card"><div class="next-step-icon">${icon("sparkles")}</div><div><div class="eyebrow">A GOOD PLACE TO START</div><h3>Continue your learning</h3><p>Pick up at the next unchecked lesson in one of the six skill paths.</p><button class="button button-primary" data-action="continue-academy">Continue learning <span aria-hidden="true">→</span></button></div></article>
+        <article class="academy-callout card"><div class="callout-icon">${icon("calendar")}</div><div class="eyebrow">MAKE IT YOURS</div><h3>Plan any part of your week</h3><p>Add learning, projects, applications, church, or personal events to your 2027 calendar.</p><button class="button button-secondary" data-route="calendar">Open 2027 Calendar</button></article>
       </section>`;
   }
 
   function renderLearning() {
     const c = counts();
-    return `${topLevelHeader("DECEMBER 1–30, 2026", "My Learning Plan", "Thirty focused days, organized into clear phases. Check off each lesson as you complete it.", `<div class="mini-total"><strong data-value="completedLessons">${c.completedLessons}</strong><span> / <span data-value="totalLessons">${c.totalLessons}</span> lessons</span></div>`)}
-      <section class="plan-summary card"><div><span class="eyebrow">MONTHLY COMPLETION</span><h2><span data-value="overallPercent">${percentage(c.completedLessons, c.totalLessons)}%</span> of your plan completed</h2><p><span data-value="completedDays">${c.completedDays}</span> of 30 days fully complete</p></div><div class="plan-summary-progress">${progressBar(percentage(c.completedLessons, c.totalLessons), "emerald", "Learning plan progress")}</div></section>
-      <div class="phase-intro"><div class="eyebrow">THE 30-DAY ROADMAP</div><p>Open a day to see its lessons. Your check-offs save automatically in this browser.</p></div>
+    return `${topLevelHeader("YOUR FLEXIBLE STARTING ROADMAP", "My Learning Plan", "A 30-session checklist you can follow at your own pace, pause, or revisit. It has no calendar dates.", `<div class="mini-total"><strong data-value="completedLessons">${c.completedLessons}</strong><span> / <span data-value="totalLessons">${c.totalLessons}</span> tasks</span></div>`)}
+      <section class="plan-summary card"><div><span class="eyebrow">SELF-PACED ROADMAP</span><h2><span data-value="overallPercent">${percentage(c.completedLessons, c.totalLessons)}%</span> of roadmap tasks complete</h2><p><span data-value="completedDays">${c.completedDays}</span> sessions fully complete</p></div><div class="plan-summary-progress">${progressBar(percentage(c.completedLessons, c.totalLessons), "emerald", "Learning plan progress")}</div></section>
+      <div class="phase-intro"><div class="eyebrow">THE 30-SESSION ROADMAP</div><p>Open a session to see its tasks. Check-offs save automatically in this browser; use the Learning Academy for the full interactive paths.</p><button class="button button-outline" data-route="academy">Open Learning Academy →</button></div>
       <div class="phase-list">${PHASES.map((phase) => {
         const days = LESSONS.filter((day) => day.day >= phase.start && day.day <= phase.end);
         return `<section class="phase-section"><div class="phase-heading"><div class="phase-marker ${phase.tone}"></div><div><h2>${phase.title}</h2><span>${phase.range} <span class="separator-dot">·</span> ${days.length} days</span></div></div>
@@ -333,10 +508,9 @@
   function renderDay(day, tone) {
     const done = day.tasks.reduce((sum, _, index) => sum + (state.lessonStatus[`d${day.day}-l${index}`] ? 1 : 0), 0);
     const complete = done === day.tasks.length;
-    const today = todayKey() === `2026-12-${String(day.day).padStart(2, "0")}`;
-    const dayLabel = complete ? "Complete" : today ? "Today" : `${day.tasks.length - done} to go`;
-    return `<details class="day-card" data-day="${day.day}" data-day-track="${escapeHtml(day.track)}" ${today ? "open" : ""}>
-      <summary><span class="day-number ${tone} ${complete ? "is-complete" : ""}">${complete ? icon("check") : String(day.day).padStart(2, "0")}</span><span class="day-summary-main"><span class="day-date">${dateForDay(day.day)}${today ? '<span class="today-tag">TODAY</span>' : ""}</span><strong>${day.title}</strong></span><span class="day-track-tag">${escapeHtml(day.track === "Career" ? "Career" : day.track)}</span><span class="day-progress"><strong data-day-done="${day.day}">${done}</strong> / ${day.tasks.length}<span class="day-progress-label"> complete</span></span><span class="day-status ${complete ? "is-complete" : ""}" data-day-status="${day.day}">${dayLabel}</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+    const dayLabel = complete ? "Complete" : `${day.tasks.length - done} to go`;
+    return `<details class="day-card" data-day="${day.day}" data-day-track="${escapeHtml(day.track)}">
+      <summary><span class="day-number ${tone} ${complete ? "is-complete" : ""}">${complete ? icon("check") : String(day.day).padStart(2, "0")}</span><span class="day-summary-main"><span class="day-date">SESSION ${String(day.day).padStart(2, "0")}</span><strong>${day.title}</strong></span><span class="day-track-tag">${escapeHtml(day.track === "Career" ? "Career" : day.track)}</span><span class="day-progress"><strong data-day-done="${day.day}">${done}</strong> / ${day.tasks.length}<span class="day-progress-label"> complete</span></span><span class="day-status ${complete ? "is-complete" : ""}" data-day-status="${day.day}">${dayLabel}</span><span class="chevron" aria-hidden="true">⌄</span></summary>
       <div class="day-details"><div class="day-detail-header"><span>LESSONS & ACTIVITIES</span><span>CHECK OFF AS YOU GO</span></div><div class="lesson-list">${day.tasks.map((task, index) => {
         const id = `d${day.day}-l${index}`;
         const checked = state.lessonStatus[id] ? "checked" : "";
@@ -346,32 +520,189 @@
 
   function renderAcademy() {
     const c = counts();
-    const groups = [...new Set(ACADEMIES.map((resource) => resource.category))];
-    const actions = `<span class="studied-summary">${icon("check")} <strong data-value="studiedResources">${c.studiedResources}</strong> / ${ACADEMIES.length} studied</span>`;
-    return `${topLevelHeader("LEARNING RESOURCES", "Learning Academy", "Official learning platforms and trusted resources, grouped by the skills you're building.", actions)}
-      <div class="resource-note"><span class="resource-note-icon">${icon("sparkles")}</span><p>Course availability and pricing can change. Check each academy for current details.</p></div>
-      ${groups.map((group) => `<section class="section-block academy-group"><div class="section-heading"><div><div class="eyebrow">${group === "AI" ? "AI & CUSTOMER SUPPORT" : escapeHtml(group.toUpperCase())}</div><h2>${group === "AI" ? "AI learning" : `${escapeHtml(group)} learning`}</h2></div><span class="resource-count">${ACADEMIES.filter((item) => item.category === group).length} resources</span></div><div class="academy-grid">${ACADEMIES.filter((item) => item.category === group).map(renderAcademyCard).join("")}</div></section>`).join("")}`;
+    const actions = `<span class="studied-summary">${icon("check")} <strong data-value="studiedResources">${c.studiedResources}</strong> / ${ACADEMIES.length} complete</span><button class="button button-primary" data-action="continue-academy">Continue learning →</button>`;
+    return `${topLevelHeader("FREE OFFICIAL MATERIALS", "Learning Academy", "Six ordered skill paths with free lessons, objectives, practice assignments, notes, and saved progress.", actions)}
+      <div class="resource-note"><span class="resource-note-icon">${icon("sparkles")}</span><p>These paths link to free official documentation and learning materials. Some platforms may offer separate paid products; the linked lesson materials are free to read or access.</p></div>
+      ${ACADEMY_PATHS.map(renderAcademyPath).join("")}`;
   }
 
-  function renderAcademyCard(resource) {
-    const studied = Boolean(state.academyStudied[resource.name]);
-    return `<article class="academy-card card ${studied ? "resource-studied" : ""}"><div class="academy-card-head"><div class="academy-icon ${resource.category.toLowerCase().replace(/[^a-z]/g, "")}">${icon(resource.icon)}</div><span class="resource-category">${escapeHtml(resource.category)}</span></div><h3>${escapeHtml(resource.name)}</h3><p>${escapeHtml(resource.description)}</p><div class="academy-card-footer"><a class="button button-outline" href="${escapeHtml(resource.url)}" target="_blank" rel="noopener noreferrer">Start learning ${icon("arrow")}</a><label class="studied-check"><input type="checkbox" data-academy="${escapeHtml(resource.name)}" ${studied ? "checked" : ""}><span class="custom-check" aria-hidden="true">${icon("check")}</span><span>Studied</span></label></div></article>`;
+  function renderAcademyPath(path, index) {
+    const progress = path.lessons.filter((lesson) => state.academyProgress[lesson.id]).length;
+    const pct = percentage(progress, path.lessons.length);
+    return `<section class="academy-path section-block" data-academy-path="${path.id}"><details class="academy-path-details" ${index === 0 ? "open" : ""}><summary class="academy-path-heading"><span class="track-icon ${path.tone}">${icon(path.icon)}</span><span class="academy-path-title"><span class="eyebrow">LEARNING PATH ${index + 1}</span><strong>${escapeHtml(path.title)}</strong><small>${escapeHtml(path.description)}</small></span><span class="academy-path-count"><b data-path-done="${path.id}">${progress}</b> / ${path.lessons.length} lessons</span><span class="academy-path-percent" data-path-percent="${path.id}">${pct}%</span><span class="chevron">⌄</span></summary><div class="academy-path-content">${progressBar(pct, path.tone, `${path.title} progress`)}<div class="academy-lesson-list">${path.lessons.map((lesson, lessonIndex) => renderAcademyLesson(path, lesson, lessonIndex)).join("")}</div></div></details></section>`;
+  }
+
+  function renderAcademyLesson(path, lesson, index) {
+    const done = Boolean(state.academyProgress[lesson.id]);
+    return `<article class="academy-lesson ${done ? "academy-lesson-done" : ""}" id="academy-lesson-${lesson.id}" data-academy-lesson="${lesson.id}"><div class="academy-lesson-check"><label class="lesson-row"><input type="checkbox" data-academy-progress="${lesson.id}" data-academy-path-id="${path.id}" ${done ? "checked" : ""} aria-label="Mark ${escapeHtml(lesson.title)} complete"><span class="custom-check" aria-hidden="true">${icon("check")}</span></label></div><div class="academy-lesson-body"><div class="academy-lesson-kicker">LESSON ${String(index + 1).padStart(2, "0")}</div><h3>${escapeHtml(lesson.title)}</h3><p>${escapeHtml(lesson.description)}</p><p><strong>Objective:</strong> ${escapeHtml(lesson.objective)}</p><p class="academy-assignment"><strong>Practical assignment:</strong> ${escapeHtml(lesson.assignment)}</p><div class="academy-lesson-actions"><a class="button button-outline" href="${escapeHtml(lesson.url)}" target="_blank" rel="noopener noreferrer">Open free material ${icon("arrow")}</a><label class="academy-complete-label"><input type="checkbox" data-academy-progress="${lesson.id}" data-academy-path-id="${path.id}" ${done ? "checked" : ""}> Mark lesson complete</label></div><label class="form-field academy-notes"><span>MY NOTES</span><textarea rows="2" maxlength="2000" placeholder="Save notes or what you learned…" data-academy-note="${lesson.id}">${escapeHtml(state.academyNotes[lesson.id] || "")}</textarea></label></div></article>`;
   }
 
   function renderRoutine() {
     const c = counts();
-    const checked = c.completedRoutine;
-    return `${topLevelHeader("YOUR DAILY RHYTHM", "My Daily Routine", "A repeatable schedule that makes space for learning, job hunting, and rest.", `<span class="routine-date-chip">${icon("calendarDays")} ${formatDate(new Date(), { weekday: "long", month: "short", day: "numeric" })}</span>`)}
-      <section class="routine-summary card"><div class="routine-summary-icon">${icon("clock")}</div><div><span class="eyebrow">TODAY'S CHECKLIST</span><h2><span data-routine-done>${checked}</span> of ${ROUTINE.length} activities complete</h2><p>Check off activities as you finish them. Check-offs are saved by date.</p></div><div class="routine-summary-bar">${progressBar(percentage(checked, ROUTINE.length), "blue", "Today's routine progress")}</div></section>
-      <section class="routine-list" aria-label="Daily schedule">${ROUTINE.map((item, index) => {
-        const done = Boolean((state.routine[todayKey()] || {})[item.activity]);
-        return `<article class="routine-item ${item.category} ${done ? "routine-done" : ""}"><div class="routine-time">${escapeHtml(item.time)}</div><div class="routine-timeline"><span class="routine-dot"></span>${index < ROUTINE.length - 1 ? '<span class="routine-line"></span>' : ""}</div><div class="routine-activity-icon">${icon(item.icon)}</div><div class="routine-copy"><strong>${escapeHtml(item.activity)}</strong><span>${escapeHtml(routineCategoryLabel(item.category))}</span></div><label class="routine-check-label"><input type="checkbox" data-routine="${escapeHtml(item.activity)}" ${done ? "checked" : ""} aria-label="Mark ${escapeHtml(item.activity)} complete"><span class="custom-check" aria-hidden="true">${icon("check")}</span><span class="sr-only">Complete</span></label></article>`;
-      }).join("")}</section>
-      <p class="routine-footnote">Your schedule check-offs are for the current date and begin fresh each day.</p>`;
+    const blocks = activeRoutineBlocks(todayKey());
+    const action = `<button class="button button-primary" data-action="add-routine">${icon("plus")} Add routine block</button>`;
+    return `${topLevelHeader("REPEATABLE WEEKLY PLAN", "My Daily Routine", "Choose which days each activity repeats and add times only when they suit you. Every block is editable.", action)}
+      <section class="routine-summary card"><div class="routine-summary-icon">${icon("clock")}</div><div><span class="eyebrow">TODAY · ASIA/MANILA</span><h2><span data-routine-done>${c.completedRoutine}</span> of <span data-value="totalRoutine">${c.totalRoutine}</span> activities complete</h2><p>Today’s check-offs reset each day. Your weekly schedule remains saved.</p></div><div class="routine-summary-bar">${progressBar(percentage(c.completedRoutine, c.totalRoutine), "blue", "Today's routine progress")}</div></section>
+      <div class="routine-week-selector">${["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, i) => `<span class="weekday-chip ${((new Date(`${todayKey()}T12:00:00+08:00`).getUTCDay() + 6) % 7) === i ? "is-today" : ""}">${day.slice(0, 3)}</span>`).join("")}</div>
+      <section class="routine-list" aria-label="Today’s weekly schedule">${blocks.length ? blocks.map((item, index) => {
+        const done = Boolean((state.routine[todayKey()] || {})[item.id]);
+        return `<article class="routine-item ${done ? "routine-done" : ""}"><div class="routine-time">${escapeHtml(routineTime(item))}</div><div class="routine-timeline"><span class="routine-dot"></span>${index < blocks.length - 1 ? '<span class="routine-line"></span>' : ""}</div><div class="routine-activity-icon">${icon(routineIcon(item.category))}</div><div class="routine-copy"><strong>${escapeHtml(item.activity)}</strong><span>${escapeHtml(item.category)}</span></div><label class="routine-check-label"><input type="checkbox" data-routine="${escapeHtml(item.id)}" ${done ? "checked" : ""} aria-label="Mark ${escapeHtml(item.activity)} complete"><span class="custom-check" aria-hidden="true">${icon("check")}</span><span class="sr-only">Complete</span></label><div class="routine-actions"><button class="icon-button small-action" data-action="edit-routine" data-id="${escapeHtml(item.id)}" aria-label="Edit ${escapeHtml(item.activity)}">${icon("edit")}</button><button class="icon-button small-action danger-action" data-action="delete-routine" data-id="${escapeHtml(item.id)}" aria-label="Delete ${escapeHtml(item.activity)}">${icon("close")}</button></div></article>`;
+      }).join("") : '<div class="empty-state"><h3>No routine blocks for today</h3><p>Add a block or edit your other weekly days.</p><button class="button button-primary" data-action="add-routine">Add routine block</button></div>'}</section>
+      <section class="weekly-routine-editor card"><div class="section-heading"><div><div class="eyebrow">YOUR REPEATING WEEK</div><h2>All routine blocks</h2></div><span class="muted-copy">Times are optional and editable.</span></div><div class="weekly-block-list">${state.routineBlocks.map((item) => `<div class="weekly-block-row"><strong>${escapeHtml(item.activity)}</strong><span>${escapeHtml(daysLabel(item.days))}</span><span>${escapeHtml(routineTime(item))}</span><button class="text-button" data-action="edit-routine" data-id="${escapeHtml(item.id)}">Edit</button></div>`).join("")}</div></section>
+      <dialog class="routine-dialog" id="routine-dialog" aria-labelledby="routine-dialog-title"><form id="routine-form" method="dialog"><div class="dialog-heading"><div><div class="eyebrow">WEEKLY ROUTINE</div><h2 id="routine-dialog-title">Add routine block</h2></div><button type="button" class="icon-button" data-action="close-routine-dialog" aria-label="Close dialog">${icon("close")}</button></div><input type="hidden" name="id"><div class="form-grid"><label class="form-field form-span-2"><span>Activity <b>*</b></span><input required name="activity" maxlength="140" placeholder="For example, API lesson practice"></label><label class="form-field"><span>Start time (optional)</span><input name="startTime" type="time"></label><label class="form-field"><span>End time (optional)</span><input name="endTime" type="time"></label><label class="form-field form-span-2"><span>Category</span><select name="category">${ROUTINE_CATEGORIES.map((category) => `<option>${escapeHtml(category)}</option>`).join("")}</select></label><fieldset class="form-field form-span-2 weekdays-field"><legend>Repeat on</legend>${["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day, index) => `<label><input type="checkbox" name="days" value="${index}"><span>${day}</span></label>`).join("")}</fieldset></div><div class="dialog-actions"><button type="button" class="button button-ghost" data-action="close-routine-dialog">Cancel</button><button type="submit" class="button button-primary">Save routine block</button></div></form></dialog>`;
   }
 
-  function routineCategoryLabel(category) {
-    return ({ sleep: "Sleep & wind down", learning: "Learning", job: "Job hunting", portfolio: "Portfolio", personal: "Personal time" })[category] || "Personal time";
+  function routineIcon(category) {
+    if (/job/i.test(category)) return "briefcase";
+    if (/project/i.test(category)) return "layers";
+    if (/break|personal|church/i.test(category)) return "coffee";
+    if (/review/i.test(category)) return "chart";
+    if (/API|CRM|HighLevel|website|SEO|AI/i.test(category)) return "workflow";
+    return "book";
+  }
+
+  function openRoutineDialog(block = null) {
+    const dialog = document.getElementById("routine-dialog");
+    const form = document.getElementById("routine-form");
+    if (!dialog || !form) return;
+    form.reset();
+    form.elements.id.value = block?.id || "";
+    form.elements.activity.value = block?.activity || "";
+    form.elements.startTime.value = block?.startTime || "";
+    form.elements.endTime.value = block?.endTime || "";
+    form.elements.category.value = block?.category || "Learning";
+    const selectedDays = block?.days || [];
+    form.querySelectorAll('input[name="days"]').forEach((input) => { input.checked = selectedDays.includes(Number(input.value)); });
+    document.getElementById("routine-dialog-title").textContent = block ? "Edit routine block" : "Add routine block";
+    dialog.showModal();
+  }
+
+  function renderReminderLog() {
+    const items = state.reminderLog.slice(0, 5);
+    if (!items.length) return '<p class="empty-copy">Your reminder inbox is clear.</p>';
+    return `<div class="reminder-log-list">${items.map((item) => `<div class="reminder-log-item ${item.read ? "is-read" : ""}"><span class="agenda-category-dot category-${escapeHtml(state.calendarEvents.find((event) => event.id === item.eventId)?.category || "other")}"></span><span><strong>${escapeHtml(item.title)}</strong><small>${item.missed ? "Missed reminder" : "Reminder"} · ${escapeHtml(formatDate(dateInManila(item.date), { month: "short", day: "numeric" }))}</small></span>${item.read ? '<span class="reminder-read-label">Read</span>' : `<button class="text-button" data-action="mark-reminder-read" data-id="${escapeHtml(item.id)}">Mark read</button>`}</div>`).join("")}</div>`;
+  }
+
+  function calendarTitle() {
+    if (calendarView === "month") return new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(calendarCursor);
+    const start = calendarView === "week" ? new Date(calendarCursor.getTime() - calendarCursor.getUTCDay() * 86400000) : new Date(`${calendarSelectedDate}T12:00:00+08:00`);
+    if (calendarView === "day") return formatDate(dateInManila(calendarSelectedDate), { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    const end = new Date(start.getTime() + 6 * 86400000);
+    return `${formatDate(dateInManila(isoDateUTC(start)), { month: "short", day: "numeric" })} – ${formatDate(dateInManila(isoDateUTC(end)), { month: "short", day: "numeric", year: "numeric" })}`;
+  }
+
+  function calendarMonthView() {
+    const year = calendarCursor.getUTCFullYear();
+    const month = calendarCursor.getUTCMonth();
+    const firstDay = new Date(Date.UTC(year, month, 1));
+    const monthLength = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    const startOffset = firstDay.getUTCDay();
+    const cells = Math.ceil((startOffset + monthLength) / 7) * 7;
+    const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dateCells = Array.from({ length: cells }, (_, cellIndex) => {
+      const dayNumber = cellIndex - startOffset + 1;
+      if (dayNumber < 1 || dayNumber > monthLength) return '<div class="calendar-day-cell is-empty" aria-hidden="true"></div>';
+      const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+      const dateEvents = eventsForDate(dateKey);
+      const today = dateKey === todayKey();
+      const selected = dateKey === calendarSelectedDate;
+      return `<div class="calendar-day-cell ${today ? "is-today" : ""} ${selected ? "is-selected" : ""}"><button class="calendar-date-button" data-calendar-date="${dateKey}" aria-label="Select ${escapeHtml(formatDate(dateInManila(dateKey), { weekday: "long", month: "long", day: "numeric" }))}"><span>${dayNumber}</span>${today ? '<small>TODAY</small>' : ""}</button><div class="calendar-event-stack">${dateEvents.slice(0, 3).map((event) => `<button class="calendar-event-chip category-${escapeHtml(event.category || "other")}" data-action="edit-event" data-id="${escapeHtml(event.id)}" title="${escapeHtml(`${eventTime(event)} · ${event.title}`)}"><span>${escapeHtml(event.startTime || "")}</span>${escapeHtml(event.title)}</button>`).join("")}${dateEvents.length > 3 ? `<span class="calendar-more">+${dateEvents.length - 3} more</span>` : ""}</div><button class="calendar-add-mini" data-action="add-event" data-date="${dateKey}" aria-label="Add schedule for ${dateKey}">${icon("plus")}</button></div>`;
+    }).join("");
+    return `<div class="calendar-month-grid"><div class="calendar-weekdays">${weekdayNames.map((day) => `<span>${day}</span>`).join("")}</div><div class="calendar-month-cells">${dateCells}</div></div>`;
+  }
+
+  function calendarWeekView() {
+    const selected = new Date(`${calendarSelectedDate}T12:00:00+08:00`);
+    const sunday = new Date(Date.UTC(selected.getUTCFullYear(), selected.getUTCMonth(), selected.getUTCDate() - selected.getUTCDay()));
+    return `<div class="calendar-week-grid">${Array.from({ length: 7 }, (_, offset) => {
+      const date = new Date(sunday.getTime() + offset * 86400000);
+      const dateKey = isoDateUTC(date);
+      const inYear = dateKey.startsWith("2027-");
+      return `<section class="calendar-week-day ${dateKey === todayKey() ? "is-today" : ""} ${!inYear ? "outside-year" : ""}"><button class="calendar-week-date" ${inYear ? `data-calendar-date="${dateKey}"` : "disabled"}><span>${new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(date)}</span><strong>${date.getUTCDate()}</strong></button>${inYear ? renderCalendarEvents(dateKey) : ""}${inYear ? `<button class="button button-outline calendar-add-button" data-action="add-event" data-date="${dateKey}">${icon("plus")} Add</button>` : ""}</section>`;
+    }).join("")}</div>`;
+  }
+
+  function renderCalendarEvents(dateKey) {
+    const events = eventsForDate(dateKey);
+    return events.length ? `<div class="calendar-event-list">${events.map((event) => `<article class="calendar-event-card category-${escapeHtml(event.category || "other")}"><span class="calendar-event-time">${escapeHtml(eventTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(eventCategoryName(event.category))}${event.recurrence !== "none" ? ` · ${escapeHtml(event.recurrence)}` : ""}</small><div class="calendar-event-actions"><button class="text-button" data-action="edit-event" data-id="${escapeHtml(event.id)}">Edit</button><button class="text-button danger-text" data-action="delete-event" data-id="${escapeHtml(event.id)}">Delete</button></div></article>`).join("")}</div>` : '<p class="calendar-empty-day">Nothing scheduled</p>';
+  }
+
+  function calendarDayView() {
+    return `<section class="calendar-selected-day"><div class="calendar-selected-heading"><div><div class="eyebrow">DAILY SCHEDULE · ASIA/MANILA</div><h2>${escapeHtml(calendarTitle())}</h2></div><button class="button button-primary" data-action="add-event" data-date="${calendarSelectedDate}">${icon("plus")} Add Schedule</button></div>${renderCalendarEvents(calendarSelectedDate)}</section>`;
+  }
+
+  function renderCalendar() {
+    const navActions = `<div class="calendar-toolbar"><div class="calendar-move-controls"><button class="icon-button" data-action="calendar-prev" aria-label="Previous ${calendarView}">←</button><button class="button button-outline" data-action="calendar-today">Today</button><button class="icon-button" data-action="calendar-next" aria-label="Next ${calendarView}">→</button><h2 class="calendar-title">${escapeHtml(calendarTitle())}</h2></div><div class="calendar-view-tabs">${["month", "week", "day"].map((view) => `<button class="calendar-view-tab ${calendarView === view ? "active" : ""}" data-calendar-view="${view}">${view[0].toUpperCase()}${view.slice(1)}</button>`).join("")}</div></div>`;
+    const addAction = `<button class="button button-primary" data-action="add-event" data-date="${calendarSelectedDate}">${icon("plus")} Add Schedule</button>`;
+    return `${topLevelHeader("PERSONAL AND LEARNING SCHEDULES", "2027 Calendar", "Plan learning, job applications, projects, church, and personal events. Event times and reminders use Asia/Manila.", addAction)}
+      <section class="calendar-card card"><div class="calendar-toolbar-row">${navActions}</div>${calendarView === "month" ? calendarMonthView() : calendarView === "week" ? calendarWeekView() : calendarDayView()}</section>
+      <section class="calendar-category-legend section-block"><div class="eyebrow">EVENT CATEGORIES</div><div class="category-legend-list">${EVENT_CATEGORIES.map(([id, name]) => `<span><i class="agenda-category-dot category-${id}"></i>${escapeHtml(name)}</span>`).join("")}</div></section>
+      <dialog class="event-dialog" id="event-dialog" aria-labelledby="event-dialog-title"><form id="event-form" method="dialog"><div class="dialog-heading"><div><div class="eyebrow">2027 CALENDAR · ASIA/MANILA</div><h2 id="event-dialog-title">Add schedule</h2></div><button type="button" class="icon-button" data-action="close-event-dialog" aria-label="Close dialog">${icon("close")}</button></div><input type="hidden" name="id"><div class="form-grid"><label class="form-field form-span-2"><span>Title <b>*</b></span><input required name="title" maxlength="140" placeholder="What is scheduled?"></label><label class="form-field form-span-2"><span>Description</span><textarea name="description" rows="3" maxlength="1600" placeholder="Details, location, or notes"></textarea></label><label class="form-field"><span>Date <b>*</b></span><input required name="date" type="date" min="2027-01-01" max="2027-12-31"></label><label class="form-field"><span>Category</span><select name="category">${EVENT_CATEGORIES.map(([id, name]) => `<option value="${id}">${escapeHtml(name)}</option>`).join("")}</select></label><label class="form-field"><span>Start time <b>*</b></span><input required name="startTime" type="time"></label><label class="form-field"><span>End time</span><input name="endTime" type="time"></label><label class="form-field"><span>Repeat</span><select name="recurrence"><option value="none">Does not repeat</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label><label class="form-field"><span>Reminder</span><select name="reminderMinutes"><option value="">No reminder</option><option value="0">At event time</option><option value="5">5 minutes before</option><option value="15" selected>15 minutes before</option><option value="30">30 minutes before</option><option value="60">1 hour before</option><option value="1440">1 day before</option></select></label></div><p class="form-help">Recurring events repeat on the same weekday or date. Edit or delete the series from any occurrence.</p><div class="dialog-actions"><button type="button" class="button button-ghost" data-action="close-event-dialog">Cancel</button><button type="submit" class="button button-primary">Save schedule</button></div></form></dialog>`;
+  }
+
+  function moveCalendar(delta) {
+    if (calendarView === "month") {
+      const month = Math.min(11, Math.max(0, calendarCursor.getUTCMonth() + delta));
+      calendarCursor = new Date(Date.UTC(2027, month, 1));
+      const selectedDay = Number(calendarSelectedDate.slice(-2));
+      const lastDay = new Date(Date.UTC(2027, month + 1, 0)).getUTCDate();
+      calendarSelectedDate = `2027-${String(month + 1).padStart(2, "0")}-${String(Math.min(selectedDay, lastDay)).padStart(2, "0")}`;
+    } else {
+      const base = new Date(`${calendarSelectedDate}T12:00:00+08:00`);
+      const step = calendarView === "week" ? 7 : 1;
+      const next = new Date(base.getTime() + delta * step * 86400000);
+      const candidate = isoDateUTC(new Date(Date.UTC(next.getUTCFullYear(), next.getUTCMonth(), next.getUTCDate())));
+      calendarSelectedDate = candidate < "2027-01-01" ? "2027-01-01" : candidate > "2027-12-31" ? "2027-12-31" : candidate;
+      calendarCursor = new Date(`${calendarSelectedDate}T12:00:00+08:00`);
+    }
+    renderApp();
+  }
+
+  function openEventDialog(eventData = null, dateKey = calendarSelectedDate) {
+    const dialog = document.getElementById("event-dialog");
+    const form = document.getElementById("event-form");
+    if (!dialog || !form) return;
+    form.reset();
+    form.elements.id.value = eventData?.id || "";
+    form.elements.title.value = eventData?.title || "";
+    form.elements.description.value = eventData?.description || "";
+    form.elements.date.value = eventData?.date || (dateKey.startsWith("2027-") ? dateKey : "2027-01-01");
+    form.elements.category.value = eventData?.category || "personal";
+    form.elements.startTime.value = eventData?.startTime || "09:00";
+    form.elements.endTime.value = eventData?.endTime || "";
+    form.elements.recurrence.value = eventData?.recurrence || "none";
+    form.elements.reminderMinutes.value = eventData?.reminderMinutes === null || eventData?.reminderMinutes === undefined ? "15" : String(eventData.reminderMinutes);
+    document.getElementById("event-dialog-title").textContent = eventData ? "Edit schedule" : "Add schedule";
+    dialog.showModal();
+  }
+
+  function checkReminders() {
+    const now = Date.now();
+    const today = todayKey();
+    if (!today.startsWith("2027-")) return;
+    const current = new Date(`${today}T12:00:00+08:00`);
+    for (let offset = -1; offset <= 1; offset += 1) {
+      const dateKey = isoDateUTC(new Date(current.getTime() + offset * 86400000));
+      if (!dateKey.startsWith("2027-")) continue;
+      eventsForDate(dateKey).forEach((event) => {
+        if (event.reminderMinutes === null || event.reminderMinutes === undefined || !event.startTime) return;
+        const occurrence = new Date(`${dateKey}T${event.startTime}:00+08:00`).getTime();
+        const reminderAt = occurrence - Number(event.reminderMinutes) * 60000;
+        const missed = now > occurrence && now <= occurrence + 10 * 60000;
+        if ((!missed && (now < reminderAt || now > occurrence)) || (missed && now < occurrence)) return;
+        const key = `${event.id}|${dateKey}|${event.reminderMinutes}`;
+        if (state.firedReminders.includes(key)) return;
+        state.firedReminders.push(key);
+        const entry = { id: key, eventId: event.id, title: event.title, date: dateKey, createdAt: new Date().toISOString(), read: false, missed };
+        state.reminderLog.unshift(entry);
+        state.reminderLog = state.reminderLog.slice(0, 100);
+        showToast(`${missed ? "Missed reminder" : "Upcoming"}: ${event.title}`);
+        if (!missed && state.notificationsEnabled && typeof Notification !== "undefined" && Notification.permission === "granted") {
+          try { new Notification(event.title, { body: `${eventTime(event)} · Asia/Manila`, tag: key }); } catch (error) { console.warn("Browser notification could not be shown.", error); }
+        }
+        saveState(false);
+      });
+    }
   }
 
   function renderApplications() {
@@ -447,14 +778,14 @@
   function renderProgress() {
     const c = counts();
     const overall = percentage(c.completedLessons, c.totalLessons);
-    return `${topLevelHeader("YOUR MONTH AT A GLANCE", "Progress Report", "A live view of your lessons, learning paths, resources, and portfolio milestones.", `<button class="button button-outline" data-action="download-backup">${icon("download")} Download backup</button>`)}
-      <section class="report-hero card"><div><div class="eyebrow">DECEMBER LEARNING JOURNEY</div><h2>Progress that adds up.</h2><p>Every checked lesson contributes to your monthly completion.</p><div class="report-hero-numbers"><div><strong data-value="completedLessons">${c.completedLessons}</strong><span>lessons completed</span></div><div><strong data-value="completedDays">${c.completedDays}<small> / 30</small></strong><span>days complete</span></div><div><strong data-value="overallPercent">${overall}%</strong><span>overall progress</span></div></div></div><div class="report-ring" style="--progress:${overall}%"><div><strong data-value="overallPercent">${overall}%</strong><span>COMPLETE</span></div></div></section>
+    return `${topLevelHeader("YOUR LEARNING AT A GLANCE", "Progress Report", "A live view of your self-paced roadmap, skill paths, reminders, and portfolio milestones.", `<button class="button button-outline" data-action="download-backup">${icon("download")} Download backup</button>`)}
+      <section class="report-hero card"><div><div class="eyebrow">SELF-PACED LEARNING</div><h2>Progress that adds up.</h2><p>Track the 30-session roadmap and your six academy paths at your own pace.</p><div class="report-hero-numbers"><div><strong data-value="completedLessons">${c.completedLessons}</strong><span>roadmap tasks completed</span></div><div><strong data-value="completedDays">${c.completedDays}<small> / 30</small></strong><span>sessions complete</span></div><div><strong data-value="overallPercent">${overall}%</strong><span>roadmap progress</span></div></div></div><div class="report-ring" style="--progress:${overall}%"><div><strong data-value="overallPercent">${overall}%</strong><span>COMPLETE</span></div></div></section>
       <section class="section-block report-tracks"><div class="section-heading"><div><div class="eyebrow">SKILLS BY TRACK</div><h2>Learning path progress</h2></div><span class="resource-count">${c.totalLessons} lessons total</span></div><div class="report-track-list">${TRACKS.map((track) => renderTrackReport(track, c.trackCounts[track.id])).join("")}</div></section>
-      <section class="section-block"><div class="section-heading"><div><div class="eyebrow">DAY BY DAY</div><h2>Thirty-day completion</h2></div><span class="subtle-count"><strong data-value="completedDays">${c.completedDays}</strong> / 30 days</span></div><div class="report-days card">${LESSONS.map((day) => {
+      <section class="section-block"><div class="section-heading"><div><div class="eyebrow">SESSION BY SESSION</div><h2>Thirty-session completion</h2></div><span class="subtle-count"><strong data-value="completedDays">${c.completedDays}</strong> / 30 sessions</span></div><div class="report-days card">${LESSONS.map((day) => {
         const done = day.tasks.reduce((sum, _, index) => sum + (state.lessonStatus[`d${day.day}-l${index}`] ? 1 : 0), 0);
-        return `<div class="report-day-row"><span class="report-day-number">${String(day.day).padStart(2, "0")}</span><span class="report-day-title"><strong>${escapeHtml(day.title)}</strong><small>${dateForDay(day.day)} · ${escapeHtml(day.track)}</small></span><span class="report-day-count"><strong data-day-done="${day.day}">${done}</strong> / ${day.tasks.length}</span><div class="report-day-progress">${progressBar(percentage(done, day.tasks.length), done === day.tasks.length ? "emerald" : "blue", `Day ${day.day} completion`)}</div><span class="report-day-pct" data-day-pct="${day.day}">${percentage(done, day.tasks.length)}%</span></div>`;
+        return `<div class="report-day-row"><span class="report-day-number">${String(day.day).padStart(2, "0")}</span><span class="report-day-title"><strong>${escapeHtml(day.title)}</strong><small>Session ${day.day} · ${escapeHtml(day.track)}</small></span><span class="report-day-count"><strong data-day-done="${day.day}">${done}</strong> / ${day.tasks.length}</span><div class="report-day-progress">${progressBar(percentage(done, day.tasks.length), done === day.tasks.length ? "emerald" : "blue", `Session ${day.day} completion`)}</div><span class="report-day-pct" data-day-pct="${day.day}">${percentage(done, day.tasks.length)}%</span></div>`;
       }).join("")}</div></section>
-      <section class="report-lower-grid"><article class="report-stat-card card"><div class="metric-icon green">${icon("compass")}</div><span class="metric-label">Academy resources studied</span><strong><span data-value="studiedResources">${c.studiedResources}</span> <small>/ ${ACADEMIES.length}</small></strong><button class="text-button" data-route="academy">View learning academy →</button></article><article class="report-stat-card card"><div class="metric-icon purple">${icon("layers")}</div><span class="metric-label">Portfolio projects completed</span><strong><span data-value="completedProjects">${c.completedProjects}</span> <small>/ 5</small></strong><button class="text-button" data-route="portfolio">View your portfolio →</button></article><article class="report-stat-card card"><div class="metric-icon blue">${icon("briefcase")}</div><span class="metric-label">Applications submitted</span><strong><span data-value="applicationsSubmitted">${c.applicationsSubmitted}</span></strong><button class="text-button" data-route="applications">Open job tracker →</button></article></section>`;
+      <section class="report-lower-grid"><article class="report-stat-card card"><div class="metric-icon green">${icon("compass")}</div><span class="metric-label">Academy lessons complete</span><strong><span data-value="studiedResources">${c.studiedResources}</span> <small>/ ${ACADEMIES.length}</small></strong><button class="text-button" data-route="academy">View learning academy →</button></article><article class="report-stat-card card"><div class="metric-icon purple">${icon("layers")}</div><span class="metric-label">Portfolio projects completed</span><strong><span data-value="completedProjects">${c.completedProjects}</span> <small>/ 5</small></strong><button class="text-button" data-route="portfolio">View your portfolio →</button></article><article class="report-stat-card card"><div class="metric-icon blue">${icon("briefcase")}</div><span class="metric-label">Applications submitted</span><strong><span data-value="applicationsSubmitted">${c.applicationsSubmitted}</span></strong><button class="text-button" data-route="applications">Open job tracker →</button></article></section>`;
   }
 
   function renderTrackReport(track, data) {
@@ -467,16 +798,17 @@
     return `${topLevelHeader("PERSONALIZE YOUR SPACE", "Settings", "Manage your saved learning data and understand where it lives.")}
       <div class="settings-grid"><section class="settings-card card"><div class="settings-card-icon">${icon("database")}</div><div class="eyebrow">SAVED ON THIS DEVICE</div><h2>Your progress stays in this browser</h2><p>Check-offs, application details, project notes, and screenshots are saved in this browser's local storage. They are not automatically synchronized between devices. Download a backup from the Progress Report before switching devices.</p><div class="settings-stats"><div><strong>${c.completedLessons}</strong><span>lessons checked off</span></div><div><strong>${state.applications.length}</strong><span>applications tracked</span></div><div><strong>${c.studiedResources}</strong><span>resources studied</span></div></div><button class="button button-outline" data-action="download-backup">${icon("download")} Download a data backup</button></section>
       <section class="settings-card settings-reset card"><div class="settings-card-icon danger">${icon("close")}</div><div class="eyebrow">START FRESH</div><h2>Reset saved data</h2><p>Clear all lesson check-offs, schedule activity, academy study marks, applications, project checklists, notes, and uploaded screenshots from this browser.</p><div class="settings-reset-note">This action cannot be undone. Download a backup first if you want to keep a copy.</div><button class="button button-danger" data-action="reset-data">Reset all saved data</button></section>
-      <section class="settings-card card settings-about"><div class="settings-card-icon">${icon("calendarDays")}</div><div class="eyebrow">PROGRAM DETAILS</div><h2>30-Day Digital Skills & Career Development Program</h2><p>Gabriel Valdez's Learning Hub is set up for December 1–30, 2026. Daily lesson totals are calculated from the curriculum, so progress denominators stay in sync with the tasks you see.</p><div class="settings-program-row"><span>Program dates</span><strong>December 1–30, 2026</strong></div><div class="settings-program-row"><span>Learning tasks</span><strong>${c.totalLessons} across 30 days</strong></div><div class="settings-program-row"><span>Academy resources</span><strong>${ACADEMIES.length}</strong></div></section></div>`;
+      <section class="settings-card card settings-about"><div class="settings-card-icon">${icon("calendarDays")}</div><div class="eyebrow">HUB DETAILS</div><h2>Permanent learning and schedule hub</h2><p>The 30-session roadmap is self-paced. The weekly routine repeats on selected days, and calendar events cover January through December 2027. Reminder times use Asia/Manila.</p><div class="settings-program-row"><span>Roadmap tasks</span><strong>${c.totalLessons} across 30 sessions</strong></div><div class="settings-program-row"><span>Academy lessons</span><strong>${ACADEMIES.length} across six paths</strong></div><div class="settings-program-row"><span>Routine blocks</span><strong>${state.routineBlocks.length} editable blocks</strong></div><div class="settings-program-row"><span>Calendar events</span><strong>${state.calendarEvents.length}</strong></div></section></div>`;
   }
 
   const PAGE_RENDERERS = {
-    dashboard: renderDashboard, learning: renderLearning, academy: renderAcademy,
+    dashboard: renderDashboard, learning: renderLearning, academy: renderAcademy, calendar: renderCalendar,
     routine: renderRoutine, applications: renderApplications, portfolio: renderPortfolio,
     progress: renderProgress, settings: renderSettings
   };
 
   function renderApp() {
+    document.querySelectorAll("[data-icon]").forEach((node) => { node.innerHTML = icon(node.dataset.icon); });
     document.querySelectorAll(".nav-link[data-route]").forEach((button) => {
       const selected = button.dataset.route === currentRoute;
       button.classList.toggle("active", selected);
@@ -494,7 +826,14 @@
     if (!PAGE_RENDERERS[route]) return;
     currentRoute = route;
     renderApp();
-    if (route === "learning" && track) {
+    if (route === "academy" && track) {
+      requestAnimationFrame(() => {
+        const section = document.querySelector(`[data-academy-path="${CSS.escape(track)}"]`);
+        const details = section?.querySelector("details");
+        if (details) details.open = true;
+        section?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    } else if (route === "learning" && track) {
       requestAnimationFrame(() => {
         const day = LESSONS.find((item) => item.track === track);
         const el = day ? document.querySelector(`[data-day="${day.day}"]`) : null;
@@ -517,11 +856,15 @@
       overallPercent: `${percentage(c.completedLessons, c.totalLessons)}%`,
       applicationsSubmitted: c.applicationsSubmitted,
       completedProjects: c.completedProjects,
-      studiedResources: c.studiedResources
+      studiedResources: c.studiedResources,
+      completedRoutine: c.completedRoutine,
+      totalRoutine: c.totalRoutine,
+      academyPercent: `${percentage(c.studiedResources, c.totalAcademyLessons)}%`
     };
     Object.entries(values).forEach(([key, value]) => document.querySelectorAll(`[data-value="${key}"]`).forEach((node) => { node.textContent = value; }));
     const overall = percentage(c.completedLessons, c.totalLessons);
-    document.querySelectorAll('[aria-label="Monthly learning progress"], [aria-label="Learning plan progress"]').forEach((bar) => setProgress(bar, overall));
+    document.querySelectorAll('[aria-label="Learning plan progress"]').forEach((bar) => setProgress(bar, overall));
+    document.querySelectorAll('[aria-label="Academy learning progress"]').forEach((bar) => setProgress(bar, percentage(c.studiedResources, c.totalAcademyLessons)));
     document.querySelectorAll(".report-ring").forEach((ring) => ring.style.setProperty("--progress", `${overall}%`));
     TRACKS.forEach((track) => {
       const item = c.trackCounts[track.id];
@@ -561,7 +904,7 @@
       }
     });
     document.querySelectorAll("[data-routine-done]").forEach((node) => { node.textContent = c.completedRoutine; });
-    document.querySelectorAll('[aria-label="Today\'s routine progress"]').forEach((bar) => setProgress(bar, percentage(c.completedRoutine, ROUTINE.length)));
+    document.querySelectorAll('[aria-label="Today\'s routine progress"]').forEach((bar) => setProgress(bar, percentage(c.completedRoutine, c.totalRoutine)));
     document.querySelectorAll("[aria-label^='Project checklist progress']").forEach((bar) => {
       const id = bar.getAttribute("aria-label").replace(" checklist progress", "");
       const project = state.projects.find((item) => item.title === id);
@@ -669,7 +1012,7 @@
   }
 
   function downloadBackup() {
-    const backup = { product: "Gabriel Valdez's Learning Hub", version: 1, exportedAt: new Date().toISOString(), data: state };
+    const backup = { product: "Gabriel Valdez's Learning Hub", version: 2, exportedAt: new Date().toISOString(), data: state };
     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
@@ -686,7 +1029,20 @@
     if (menu) menu.setAttribute("aria-expanded", "false");
   }
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener("click", async (event) => {
+    const calendarDateButton = event.target.closest("[data-calendar-date]");
+    if (calendarDateButton) {
+      calendarSelectedDate = calendarDateButton.dataset.calendarDate;
+      calendarCursor = new Date(`${calendarSelectedDate}T12:00:00+08:00`);
+      renderApp();
+      return;
+    }
+    const calendarViewButton = event.target.closest("[data-calendar-view]");
+    if (calendarViewButton) {
+      calendarView = calendarViewButton.dataset.calendarView;
+      renderApp();
+      return;
+    }
     const routeButton = event.target.closest("[data-route]");
     if (routeButton) {
       event.preventDefault();
@@ -696,6 +1052,70 @@
     const actionButton = event.target.closest("[data-action]");
     if (!actionButton) return;
     const action = actionButton.dataset.action;
+    if (action === "calendar-prev") moveCalendar(-1);
+    if (action === "calendar-next") moveCalendar(1);
+    if (action === "calendar-today") {
+      const today = todayKey();
+      calendarSelectedDate = today.startsWith("2027-") ? today : "2027-01-01";
+      calendarCursor = new Date(`${calendarSelectedDate}T12:00:00+08:00`);
+      renderApp();
+    }
+    if (action === "add-event") openEventDialog(null, actionButton.dataset.date || calendarSelectedDate);
+    if (action === "edit-event") {
+      const eventData = state.calendarEvents.find((item) => item.id === actionButton.dataset.id);
+      if (eventData) openEventDialog(eventData, eventData.date);
+    }
+    if (action === "delete-event") {
+      const scheduled = state.calendarEvents.find((item) => item.id === actionButton.dataset.id);
+      if (scheduled && window.confirm(`Delete “${scheduled.title}”${scheduled.recurrence !== "none" ? " and its repeating schedule" : ""}?`)) {
+        state.calendarEvents = state.calendarEvents.filter((item) => item.id !== scheduled.id);
+        saveState(); renderApp(); showToast("Schedule deleted.");
+      }
+    }
+    if (action === "close-event-dialog") document.getElementById("event-dialog")?.close();
+    if (action === "scroll-reminders") document.getElementById("reminder-panel")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (action === "add-routine") openRoutineDialog();
+    if (action === "edit-routine") {
+      const block = state.routineBlocks.find((item) => item.id === actionButton.dataset.id);
+      if (block) openRoutineDialog(block);
+    }
+    if (action === "delete-routine") {
+      const block = state.routineBlocks.find((item) => item.id === actionButton.dataset.id);
+      if (block && window.confirm(`Delete “${block.activity}” from your repeating routine?`)) {
+        state.routineBlocks = state.routineBlocks.filter((item) => item.id !== block.id);
+        saveState(); renderApp(); showToast("Routine block deleted.");
+      }
+    }
+    if (action === "close-routine-dialog") document.getElementById("routine-dialog")?.close();
+    if (action === "continue-academy") {
+      const nextLesson = ACADEMIES.find((lesson) => !state.academyProgress[lesson.id]);
+      if (!nextLesson) { showToast("You completed all academy lessons."); return; }
+      const path = ACADEMY_PATHS.find((item) => item.id === nextLesson.category);
+      navigate("academy");
+      requestAnimationFrame(() => {
+        const details = document.querySelector(`[data-academy-path="${path.id}"] details`);
+        if (details) details.open = true;
+        document.getElementById(`academy-lesson-${nextLesson.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+    if (action === "mark-reminder-read" || action === "mark-reminders-read") {
+      if (actionButton.dataset.id) {
+        const reminder = state.reminderLog.find((item) => item.id === actionButton.dataset.id);
+        if (reminder) reminder.read = true;
+      } else state.reminderLog.forEach((item) => { item.read = true; });
+      saveState(); renderApp();
+    }
+    if (action === "enable-notifications") {
+      if (state.notificationsEnabled) {
+        state.notificationsEnabled = false; saveState(); renderApp(); showToast("Browser notifications disabled.");
+      } else if (typeof Notification === "undefined") showToast("This browser does not support notifications.", "error");
+      else if (Notification.permission === "denied") showToast("Notifications are blocked. Allow them in your browser’s site settings, then try again.", "error");
+      else {
+        const permission = Notification.permission === "granted" ? "granted" : await Notification.requestPermission();
+        if (permission === "granted") { state.notificationsEnabled = true; saveState(); renderApp(); showToast("Browser reminders enabled while this site is open."); checkReminders(); }
+        else showToast("Notification permission was not granted. You can enable it in browser site settings.", "error");
+      }
+    }
     if (action === "add-application") openApplicationDialog();
     if (action === "edit-application") {
       const application = state.applications.find((item) => item.id === actionButton.dataset.id);
@@ -709,7 +1129,7 @@
       }
     }
     if (action === "close-dialog") document.getElementById("application-dialog")?.close();
-    if (action === "reset-data" && window.confirm("Clear all learning progress, schedule check-offs, academy marks, applications, project checklists, notes, and screenshots saved in this browser? This cannot be undone.")) {
+    if (action === "reset-data" && window.confirm("Clear all learning progress, routine blocks, calendar events, reminders, applications, project checklists, notes, and screenshots saved in this browser? This cannot be undone.")) {
       state = initialState(); saveState(); renderApp(); showToast("Saved data was reset.");
     }
     if (action === "download-backup") downloadBackup();
@@ -737,10 +1157,20 @@
       element.closest(".lesson-row")?.classList.toggle("is-checked", element.checked);
       saveState(); updateProgressWidgets();
     }
-    if (element.matches("[data-academy]")) {
-      state.academyStudied[element.dataset.academy] = element.checked;
-      element.closest(".academy-card")?.classList.toggle("resource-studied", element.checked);
+    if (element.matches("[data-academy-progress]")) {
+      const id = element.dataset.academyProgress;
+      const pathId = element.dataset.academyPathId;
+      state.academyProgress[id] = element.checked;
+      document.querySelectorAll(`[data-academy-progress="${CSS.escape(id)}"]`).forEach((input) => { input.checked = element.checked; });
+      document.querySelector(`[data-academy-lesson="${CSS.escape(id)}"]`)?.classList.toggle("academy-lesson-done", element.checked);
       saveState(); updateProgressWidgets();
+      const path = ACADEMY_PATHS.find((item) => item.id === pathId);
+      if (path) {
+        const done = path.lessons.filter((lesson) => state.academyProgress[lesson.id]).length;
+        document.querySelectorAll(`[data-path-done="${pathId}"]`).forEach((node) => { node.textContent = done; });
+        document.querySelectorAll(`[data-path-percent="${pathId}"]`).forEach((node) => { node.textContent = `${percentage(done, path.lessons.length)}%`; });
+        document.querySelectorAll(`[aria-label="${CSS.escape(path.title)} progress"]`).forEach((bar) => setProgress(bar, percentage(done, path.lessons.length)));
+      }
     }
     if (element.matches("[data-routine]")) {
       state.routine[todayKey()] ||= {};
@@ -780,9 +1210,47 @@
       const project = state.projects.find((item) => item.id === element.dataset.projectId);
       if (project) { project.notes = element.value; saveState(false); }
     }
+    if (element.matches("[data-academy-note]")) {
+      state.academyNotes[element.dataset.academyNote] = element.value;
+      saveState(false);
+    }
   });
 
   document.addEventListener("submit", (event) => {
+    if (event.target.id === "routine-form") {
+      event.preventDefault();
+      const form = event.target;
+      if (!form.reportValidity()) return;
+      const fields = new FormData(form);
+      const id = String(fields.get("id") || (crypto.randomUUID ? crypto.randomUUID() : `routine-${Date.now()}`));
+      const startTime = String(fields.get("startTime") || "");
+      const endTime = String(fields.get("endTime") || "");
+      if (startTime && endTime && endTime <= startTime) { showToast("The end time must be later than the start time.", "error"); return; }
+      const block = { id, activity: String(fields.get("activity") || "").trim(), startTime, endTime, category: String(fields.get("category") || "Learning"), days: fields.getAll("days").map(Number) };
+      const index = state.routineBlocks.findIndex((item) => item.id === id);
+      if (index >= 0) state.routineBlocks[index] = block; else state.routineBlocks.push(block);
+      saveState(); document.getElementById("routine-dialog").close(); renderApp(); showToast(index >= 0 ? "Routine block updated." : "Routine block added."); return;
+    }
+    if (event.target.id === "event-form") {
+      event.preventDefault();
+      const form = event.target;
+      if (!form.reportValidity()) return;
+      const fields = new FormData(form);
+      const startTime = String(fields.get("startTime") || "");
+      const endTime = String(fields.get("endTime") || "");
+      if (endTime && endTime <= startTime) { showToast("The end time must be later than the start time.", "error"); return; }
+      const id = String(fields.get("id") || (crypto.randomUUID ? crypto.randomUUID() : `event-${Date.now()}`));
+      const scheduled = {
+        id, title: String(fields.get("title") || "").trim(), description: String(fields.get("description") || "").trim(),
+        date: String(fields.get("date") || ""), startTime, endTime, category: String(fields.get("category") || "other"),
+        recurrence: String(fields.get("recurrence") || "none"), reminderMinutes: fields.get("reminderMinutes") === "" ? null : Number(fields.get("reminderMinutes"))
+      };
+      const index = state.calendarEvents.findIndex((item) => item.id === id);
+      if (index >= 0) state.calendarEvents[index] = scheduled; else state.calendarEvents.push(scheduled);
+      state.firedReminders = state.firedReminders.filter((key) => !key.startsWith(`${id}|`));
+      saveState(); document.getElementById("event-dialog").close();
+      calendarSelectedDate = scheduled.date; calendarCursor = new Date(`${scheduled.date}T12:00:00+08:00`); renderApp(); showToast(index >= 0 ? "Schedule updated." : "Schedule added."); checkReminders(); return;
+    }
     if (event.target.id !== "application-form") return;
     event.preventDefault();
     const form = event.target;
@@ -810,5 +1278,8 @@
   });
 
   renderApp();
+  checkReminders();
+  window.setInterval(checkReminders, 20000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) checkReminders(); });
 })();
 
